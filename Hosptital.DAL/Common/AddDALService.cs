@@ -14,6 +14,7 @@ namespace Hosptital.DAL.Common
         public static void AddDAL(this IServiceCollection services)
         {
             services.AddScoped<IDbInitlizer, DbInitlizer>();
+            //services.AddScoped<HospitalDbContext, HospitalDbContext>();
 
         }
     }
