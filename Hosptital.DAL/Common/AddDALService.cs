@@ -1,4 +1,5 @@
 ﻿using Hosptital.DAL.Data.Contexts;
+using Hosptital.DAL.Repositroyes.Classes;
 using Hosptital.DAL.Repositroyes.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -14,6 +15,7 @@ namespace Hosptital.DAL.Common
         public static void AddDAL(this IServiceCollection services)
         {
             services.AddScoped<IDbInitlizer, DbInitlizer>();
+            
 
             //services.AddScoped<HospitalDbContext, HospitalDbContext>();
 
