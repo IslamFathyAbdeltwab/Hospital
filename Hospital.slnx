@@ -1,3 +1,5 @@
 <Solution>
   <Project Path="Hospital/Hospital.csproj" />
+  <Project Path="Hosptial.BLL/Hosptial.BLL.csproj" Id="b36a9ab0-92f9-4b1e-9eec-84615982cdb2" />
+  <Project Path="Hosptital.DAL/Hosptital.DAL.csproj" Id="e3293706-60a4-4949-8026-c83c027c757b" />
 </Solution>
