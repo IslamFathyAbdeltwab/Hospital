@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Hosptital.DAL.Repositroyes.Classes
 {
-    public class UniteOfWork<TEntity> : IUniteOfWork<TEntity> where TEntity : BaseEntity
+    public class UniteOfWork : IUniteOfWork
     {
         private readonly HospitalDbContext hospitalDbContext;
 
@@ -18,8 +18,14 @@ namespace Hosptital.DAL.Repositroyes.Classes
             this.hospitalDbContext = hospitalDbContext;
         }
 
+
+
+        public int SaveChanges()
+        {
+            return hospitalDbContext.SaveChanges();
+        }
         Dictionary<Type, object> Repo = new Dictionary<Type, object>();
-        public IGenaricRepo<TEntity> GetGenaricRepo()
+        public IGenaricRepo<TEntity> GetGenaricRepo<TEntity>() where TEntity : BaseEntity
         {
             var genaricRepo = new GenaricRepo<TEntity>(hospitalDbContext);
             if (Repo.ContainsKey(typeof(TEntity)))
@@ -31,11 +37,6 @@ namespace Hosptital.DAL.Repositroyes.Classes
                 Repo.Add(typeof(TEntity), genaricRepo);
                 return genaricRepo;
             }
-        }
-
-        public int SaveChanges()
-        {
-            return hospitalDbContext.SaveChanges();
         }
     }
 }

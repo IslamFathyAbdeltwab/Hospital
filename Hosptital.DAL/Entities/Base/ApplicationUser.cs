@@ -14,7 +14,10 @@ namespace Hosptital.DAL.Entities.Base
 
         public Gender Gender { get; set; }
 
+        public ICollection<Appointment> PatientAppointments { get; set; }
+        public ICollection<Appointment> DoctorAppointments { get; set; }
 
+        public ICollection<MedicalFile> MedicalFiles { get; set; }
 
     }
     public enum Gender

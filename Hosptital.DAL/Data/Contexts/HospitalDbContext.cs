@@ -21,6 +21,10 @@ namespace Hosptital.DAL.Data.Contexts
         public DbSet<Patient> Patients { get; set; }
         public DbSet<Doctor> Doctors { get; set; }
         public DbSet<Speciality> Specialities { get; set; }
+        public DbSet<Appointment> Appointments { get; set; }
+        public DbSet<Consultation> Consultations { get; set; }
+        public DbSet<Prescription> Prescriptions { get; set; }
+        public DbSet<MedicalFile> MedicalFiles { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

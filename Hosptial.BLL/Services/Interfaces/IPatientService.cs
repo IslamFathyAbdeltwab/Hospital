@@ -10,5 +10,40 @@ namespace Hosptial.BLL.Services.Interfaces
     public interface IPatientService
     {
         public Task Register(RegisterPatientViewModel patient);
+
+        /*
+         * 
+         * 🔑 Auth
+
+               Register
+               
+               Login
+               
+               Change Password
+               
+               👤 Profile
+               
+               Get Profile
+               
+               Update Profile
+               
+               📂 Files
+               
+               Upload File
+               
+               List Files
+               
+               Delete File
+               
+               📅 Appointments
+               
+               View Appointments
+               
+               Cancel Appointment
+               
+               Reschedule Appointment
+         
+         
+         */
     }
 }
