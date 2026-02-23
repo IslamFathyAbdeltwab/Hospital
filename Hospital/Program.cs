@@ -1,9 +1,15 @@
 
+using Hosptital.DAL.Data.Contexts;
+using Hosptital.DAL.Entities.Base;
+using Hosptital.DAL.Repositroyes.Interfaces;
+using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
+
 namespace Hospital
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -13,7 +19,29 @@ namespace Hospital
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
 
+            #region Configur DataBase
+            builder.Services.AddDbContext<HospitalDbContext>(options =>
+              {
+                  options.UseSqlServer(builder.Configuration.GetConnectionString("Main"));
+
+              });
+            builder.Services.AddIdentityCore<ApplicationUser>()
+                .AddEntityFrameworkStores<HospitalDbContext>();
+            #endregion
+
+
+          
+
+
             var app = builder.Build();
+
+            #region Configur Services
+            using var scope = app.Services.CreateScope();
+            var dbInitlizer = scope.ServiceProvider.GetRequiredService<IDbInitlizer>();
+            await dbInitlizer.Initialize();
+
+
+            #endregion
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
