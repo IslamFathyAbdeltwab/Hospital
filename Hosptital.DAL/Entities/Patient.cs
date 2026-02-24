@@ -14,6 +14,9 @@ namespace Hosptital.DAL.Entities
         public ApplicationUser User { get; set; }
         public int UserId { get; set; }
 
+        public Booking Booking { get; set; }
+        public int BookingId { get; set; }
+
     }
 
     public class Address

@@ -20,10 +20,14 @@ namespace Hosptital.DAL.Data.Configurations
                 a.Property(ad => ad.City).HasMaxLength(100);
                 a.Property(ad => ad.Country).HasMaxLength(100);
             });
-             builder.HasOne(p => p.User)
-                 .WithOne()
-                 .HasForeignKey<Patient>(p => p.UserId)
-                 .OnDelete(Microsoft.EntityFrameworkCore.DeleteBehavior.Restrict);
+            builder.HasOne(p => p.User)
+                .WithOne()
+                .HasForeignKey<Patient>(p => p.UserId)
+                .OnDelete(Microsoft.EntityFrameworkCore.DeleteBehavior.Restrict);
+
+            builder.HasOne(p => p.Booking)
+                .WithOne()
+                .HasForeignKey<Patient>(p => p.BookingId);
 
         }
     }
