@@ -1,4 +1,5 @@
 
+using Hosptital.DAL.Common;
 using Hosptital.DAL.Data.Contexts;
 using Hosptital.DAL.Entities.Base;
 using Hosptital.DAL.Repositroyes.Interfaces;
@@ -29,8 +30,10 @@ namespace Hospital
                 .AddEntityFrameworkStores<HospitalDbContext>();
             #endregion
 
+            AddDALService.AddDAL(builder.Services);
 
-          
+
+
 
 
             var app = builder.Build();
