@@ -9,11 +9,20 @@ namespace Hosptital.DAL.Entities
 {
     public class Prescription : BaseEntity
     {
+        public int DoctorId { get; set; }
+        public Doctor Doctor { get; set; }
 
-        public int ConsultationId { get; set; }
-        public Consultation Consultation { get; set; }
+        public int PatientId { get; set; }
+        public Patient Patient { get; set; }
+
+        public ICollection<Treatment> Treatments { get; set; } = new List<Treatment>();
+
+    }
+    public class Treatment:BaseEntity
+    {
+        public int PrescriptionId { get; set; }
+        public Prescription Prescription { get; set; }
         public string MedicationName { get; set; }
         public string Notes { get; set; }
-       
     }
 }

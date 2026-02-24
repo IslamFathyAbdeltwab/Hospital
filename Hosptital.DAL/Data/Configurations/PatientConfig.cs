@@ -25,10 +25,9 @@ namespace Hosptital.DAL.Data.Configurations
                 .HasForeignKey<Patient>(p => p.UserId)
                 .OnDelete(Microsoft.EntityFrameworkCore.DeleteBehavior.Restrict);
 
-            builder.HasOne(p => p.Booking)
-                .WithOne()
-                .HasForeignKey<Patient>(p => p.BookingId);
-
+            builder.HasMany(p => p.Booking)
+                   .WithOne(c => c.Patient)
+                   .HasForeignKey(c => c.PatientId);
         }
     }
 }

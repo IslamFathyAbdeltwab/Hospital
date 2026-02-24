@@ -14,6 +14,6 @@ namespace Hosptital.DAL.Entities
         public string Description { get; set; }
 
         public ICollection<Doctor> Doctors { get; set; } = new HashSet<Doctor>();
-        public int DoctorId { get; set; }
+      
     }
 }

@@ -15,6 +15,8 @@ namespace Hosptital.DAL.Entities
         public int MaxPatients { get; set; }
         public int SessionDurationMinutes { get; set; }
 
+        
+
 
     }
 }

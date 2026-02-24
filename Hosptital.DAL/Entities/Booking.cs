@@ -10,7 +10,7 @@ namespace Hosptital.DAL.Entities
     public class Booking : BaseEntity
     {
         // Patient
-        public string PatientId { get; set; }
+        public int PatientId { get; set; }
         public Patient Patient { get; set; }
 
         // Booked Slot

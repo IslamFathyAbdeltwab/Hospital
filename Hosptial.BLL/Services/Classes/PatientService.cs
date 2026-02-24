@@ -10,11 +10,11 @@ using System.Threading.Tasks;
 
 namespace Hosptial.BLL.Services.Classes
 {
-    internal class PatientService(IUniteOfWork<Patient> uniteOfWork) : IPatientService
+    internal class PatientService(IUniteOfWork uniteOfWork) : IPatientService
     {
         public Task Register(RegisterPatientViewModel patient)
         {
-            
+            throw new NotImplementedException();
         }
     }
 }
