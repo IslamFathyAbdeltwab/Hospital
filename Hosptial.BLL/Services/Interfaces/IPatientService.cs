@@ -1,4 +1,5 @@
-﻿using Hosptial.BLL.ViewModels.PatientViewModels;
+﻿using Hosptial.BLL.ViewModels.Common;
+using Hosptial.BLL.ViewModels.PatientViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,41 +10,14 @@ namespace Hosptial.BLL.Services.Interfaces
 {
     public interface IPatientService
     {
-        public Task Register(RegisterPatientViewModel patient);
+       public Task<PatientViewModel> Get(int id);
+       public Task<bool> Add(AddPatientViewModel patient);
+       public Task<bool> Update(UpdatePatientViewModel patient);
+       public Task<bool> Delete(int id);
 
-        /*
-         * 
-         * 🔑 Auth
+        Task<bool> Register(RegisterPatientViewModel model);
+        Task<bool> Login(LoginViewModel model);
 
-               Register
-               
-               Login
-               
-               Change Password
-               
-               👤 Profile
-               
-               Get Profile
-               
-               Update Profile
-               
-               📂 Files
-               
-               Upload File
-               
-               List Files
-               
-               Delete File
-               
-               📅 Appointments
-               
-               View Appointments
-               
-               Cancel Appointment
-               
-               Reschedule Appointment
-         
-         
-         */
+
     }
 }

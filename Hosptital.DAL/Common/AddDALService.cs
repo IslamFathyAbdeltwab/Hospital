@@ -16,8 +16,7 @@ namespace Hosptital.DAL.Common
         {
             services.AddScoped<IDbInitlizer, DbInitlizer>();
             services.AddScoped<IUniteOfWork, UniteOfWork>();
-
-
+            services.AddScoped<IDoctorRepo, DoctorRepo>();
             //services.AddScoped<HospitalDbContext, HospitalDbContext>();
 
         }

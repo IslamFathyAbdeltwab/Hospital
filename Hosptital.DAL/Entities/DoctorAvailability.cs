@@ -14,8 +14,8 @@ namespace Hosptital.DAL.Entities
         public DateTime AvailableFrom { get; set; }
         public int MaxPatients { get; set; }
         public int SessionDurationMinutes { get; set; }
+        public decimal Price { get; set; }
 
-        
 
 
     }
