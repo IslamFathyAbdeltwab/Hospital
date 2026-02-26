@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Hosptial.BLL.ViewModels.DoctorViewModels
 {
-    internal class RegisterDoctorViewModel:UserViewModel
+    public class RegisterDoctorViewModel:UserViewModel
     {
         [Required(ErrorMessage = "Speciality is required")]
         [Range(1, int.MaxValue, ErrorMessage = "Please select a valid speciality")]

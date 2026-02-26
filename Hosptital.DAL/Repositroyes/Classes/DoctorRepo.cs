@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Hosptital.DAL.Repositroyes.Classes
 {
-    public class DoctorRepo(HospitalDbContext context) : GenaricRepo<Doctor>(context), IDoctorRepo
+    public class DoctorRepo(HospitalDbContext context ) : GenaricRepo<Doctor>(context), IDoctorRepo
     {
         private readonly HospitalDbContext context = context;
 

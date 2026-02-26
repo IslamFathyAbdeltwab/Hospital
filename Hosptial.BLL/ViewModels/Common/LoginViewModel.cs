@@ -17,5 +17,7 @@ namespace Hosptial.BLL.ViewModels.Common
         [StringLength(100, MinimumLength = 6,
            ErrorMessage = "Password must be at least 6 characters")]
         public string Password { get; set; }
+
+        public bool RemeberME { get; set; }
     }
 }

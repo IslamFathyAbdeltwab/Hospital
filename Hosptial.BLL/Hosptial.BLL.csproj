@@ -9,9 +9,10 @@
   <ItemGroup>
     <ProjectReference Include="..\Hosptital.DAL\Hosptital.DAL.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Common\" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="AutoMapper" Version="16.0.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.3.9" />
+		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="9.0.13" />
+	</ItemGroup>
 
 </Project>

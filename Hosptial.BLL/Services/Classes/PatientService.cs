@@ -1,8 +1,11 @@
-﻿using Hosptial.BLL.Services.Interfaces;
+﻿using AutoMapper;
+using Hosptial.BLL.Services.Interfaces;
 using Hosptial.BLL.ViewModels.Common;
 using Hosptial.BLL.ViewModels.PatientViewModels;
 using Hosptital.DAL.Entities;
+using Hosptital.DAL.Entities.Base;
 using Hosptital.DAL.Repositroyes.Interfaces;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,36 +14,124 @@ using System.Threading.Tasks;
 
 namespace Hosptial.BLL.Services.Classes
 {
-    internal class PatientService(IUniteOfWork uniteOfWork) : IPatientService
+    internal class PatientService : IPatientService
     {
-        public Task<bool> Add(AddPatientViewModel patient)
+        private readonly IUniteOfWork _unitOfWork;
+        private readonly IGenaricRepo<Patient> _patientRepo;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly IMapper _mapper;
+
+        public PatientService(
+            IUniteOfWork unitOfWork,
+            IGenaricRepo<Patient> patientRepo,
+            UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager,
+            IMapper mapper)
         {
-            throw new NotImplementedException();
+            _unitOfWork = unitOfWork;
+            _patientRepo = patientRepo;
+            _userManager = userManager;
+            _signInManager = signInManager;
+            _mapper = mapper;
         }
 
-        public Task<PatientViewModel> Get(int id)
+        // ================= ADD =================
+        public async Task<bool> Add(AddPatientViewModel model)
         {
-            throw new NotImplementedException();
+            if (model == null) return false;
+
+            var user = new ApplicationUser
+            {
+                UserName = model.UserName,
+                Email = model.Email,
+                PhoneNumber = model.PhoneNumber
+            };
+
+            var result = await _userManager.CreateAsync(user, model.Password);
+            if (!result.Succeeded)
+                return false;
+
+            var patient = _mapper.Map<Patient>(model);
+            patient.User = user;
+
+             _patientRepo.Add(patient);
+            return  _unitOfWork.SaveChanges() > 0;
         }
 
-        public Task<bool> Update(UpdatePatientViewModel patient)
+        // ================= GET =================
+        public async Task<PatientViewModel?> Get(int id)
         {
-            throw new NotImplementedException();
+            if (id <= 0) return null;
+
+            var patient = await _patientRepo.Get(id);
+            if (patient == null) return null;
+
+            return _mapper.Map<PatientViewModel>(patient);
         }
 
-        public Task<bool> Delete(int id)
+        // ================= UPDATE =================
+        public async Task<bool> Update(UpdatePatientViewModel model)
         {
-            throw new NotImplementedException();
+            if (model == null || model.Id <= 0) return false;
+
+            var patient = await _patientRepo.Get(model.Id);
+            if (patient == null) return false;
+
+            patient.User.UserName = model.Name;
+            patient.User.PhoneNumber = model.Phone;
+
+            _patientRepo.Update(patient);
+            return  _unitOfWork.SaveChanges() > 0;
         }
 
-        public Task<bool> Register(RegisterPatientViewModel model)
+        // ================= DELETE =================
+        public async Task<bool> Delete(int id)
         {
-            throw new NotImplementedException();
+            if (id <= 0) return false;
+
+            var patient = await _patientRepo.Get(id);
+            if (patient == null) return false;
+
+            _patientRepo.Delete(patient);
+            return  _unitOfWork.SaveChanges() > 0;
         }
 
-        public Task<bool> Login(LoginViewModel model)
+        // ================= REGISTER =================
+        public async Task<bool> Register(RegisterPatientViewModel model)
         {
-            throw new NotImplementedException();
+            if (model == null) return false;
+
+            var user = new ApplicationUser
+            {
+                UserName = model.Name,
+                Email = model.Email,
+                PhoneNumber = model.Phone
+            };
+
+            var result = await _userManager.CreateAsync(user, model.Password);
+            if (!result.Succeeded)
+                return false;
+
+            var patient = _mapper.Map<Patient>(model);
+            patient.User = user;
+
+             _patientRepo.Add(patient);
+            return  _unitOfWork.SaveChanges() > 0;
+        }
+
+        // ================= LOGIN =================
+        public async Task<bool> Login(LoginViewModel model)
+        {
+            if (model == null) return false;
+
+            var result = await _signInManager.PasswordSignInAsync(
+                model.Email,
+                model.Password,
+                model.RemeberME,
+                false);
+
+            return result.Succeeded;
         }
     }
 }

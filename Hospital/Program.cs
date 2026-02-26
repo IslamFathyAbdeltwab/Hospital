@@ -1,9 +1,13 @@
 
+
+using Hosptial.BLL.Profiles;
 using Hosptital.DAL.Common;
 using Hosptital.DAL.Data.Contexts;
 using Hosptital.DAL.Entities.Base;
 using Hosptital.DAL.Repositroyes.Interfaces;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using System.Threading.Tasks;
 
 namespace Hospital
@@ -26,13 +30,14 @@ namespace Hospital
                   options.UseSqlServer(builder.Configuration.GetConnectionString("Main"));
 
               });
-            builder.Services.AddIdentityCore<ApplicationUser>()
-                .AddEntityFrameworkStores<HospitalDbContext>();
+            builder.Services
+              .AddIdentityCore<ApplicationUser>()
+              .AddRoles<IdentityRole>()
+              .AddEntityFrameworkStores<HospitalDbContext>()
+              .AddDefaultTokenProviders();
             #endregion
 
             AddDALService.AddDAL(builder.Services);
-
-
 
 
 
