@@ -5,7 +5,7 @@
 namespace Hosptital.DAL.Migrations
 {
     /// <inheritdoc />
-    public partial class price : Migration
+    public partial class Address : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

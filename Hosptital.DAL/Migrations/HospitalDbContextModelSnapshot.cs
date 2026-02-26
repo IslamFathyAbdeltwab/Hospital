@@ -132,7 +132,7 @@ namespace Hosptital.DAL.Migrations
 
                     b.HasIndex("PatientId");
 
-                    b.ToTable("Bookings");
+                    b.ToTable("Bookings", (string)null);
                 });
 
             modelBuilder.Entity("Hosptital.DAL.Entities.Doctor", b =>
@@ -173,7 +173,7 @@ namespace Hosptital.DAL.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("Doctors");
+                    b.ToTable("Doctors", (string)null);
                 });
 
             modelBuilder.Entity("Hosptital.DAL.Entities.DoctorAvailability", b =>
@@ -245,7 +245,7 @@ namespace Hosptital.DAL.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("Patients");
+                    b.ToTable("Patients", (string)null);
                 });
 
             modelBuilder.Entity("Hosptital.DAL.Entities.Prescription", b =>
@@ -278,7 +278,7 @@ namespace Hosptital.DAL.Migrations
 
                     b.HasIndex("PatientId");
 
-                    b.ToTable("Prescriptions");
+                    b.ToTable("Prescriptions", (string)null);
                 });
 
             modelBuilder.Entity("Hosptital.DAL.Entities.Speciality", b =>
@@ -311,7 +311,7 @@ namespace Hosptital.DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Specialities");
+                    b.ToTable("Specialities", (string)null);
                 });
 
             modelBuilder.Entity("Hosptital.DAL.Entities.Treatment", b =>
@@ -343,7 +343,7 @@ namespace Hosptital.DAL.Migrations
 
                     b.HasIndex("PrescriptionId");
 
-                    b.ToTable("Treatment");
+                    b.ToTable("Treatment", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<int>", b =>
@@ -558,7 +558,7 @@ namespace Hosptital.DAL.Migrations
 
                             b1.HasKey("PatientId");
 
-                            b1.ToTable("Patients");
+                            b1.ToTable("Patients", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("PatientId");

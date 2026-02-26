@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Hosptital.DAL.Migrations
 {
     [DbContext(typeof(HospitalDbContext))]
-    [Migration("20260226113433_price")]
-    partial class price
+    [Migration("20260226113105_Address")]
+    partial class Address
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

@@ -31,8 +31,8 @@ namespace Hospital
 
               });
             builder.Services
-              .AddIdentity<ApplicationUser,IdentityRole>()
-              .AddRoles<IdentityRole>()
+              .AddIdentity<ApplicationUser, IdentityRole<int>>()
+              .AddRoles<IdentityRole<int>>()
               .AddEntityFrameworkStores<HospitalDbContext>()
               .AddDefaultTokenProviders();
             #endregion
