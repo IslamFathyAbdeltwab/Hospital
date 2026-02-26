@@ -31,7 +31,7 @@ namespace Hospital
 
               });
             builder.Services
-              .AddIdentityCore<ApplicationUser>()
+              .AddIdentity<ApplicationUser,IdentityRole>()
               .AddRoles<IdentityRole>()
               .AddEntityFrameworkStores<HospitalDbContext>()
               .AddDefaultTokenProviders();
