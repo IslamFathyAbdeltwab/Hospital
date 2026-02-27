@@ -16,11 +16,14 @@ namespace Hosptial.BLL.Common
         {
             services.AddScoped<IDoctorService, DoctorService>();
             services.AddScoped<IPatientService, PatientService>();
+            services.AddScoped<IBookingService, BookingService>();
+
             services.AddAutoMapper(m =>
             {
 
                 m.AddProfile(new DoctorProfile());
                 m.AddProfile(new PatientProfile());
+                m.AddProfile(new BookingProfile());
 
 
 

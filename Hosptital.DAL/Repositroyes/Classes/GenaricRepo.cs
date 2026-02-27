@@ -27,9 +27,15 @@ namespace Hosptital.DAL.Repositroyes.Classes
           return await hospitalDbContext.Set<TEntity>().FindAsync(id);
         }
 
-        public async Task<List<TEntity>> GetAll()
+      
+
+        public async Task<List<TEntity?>> GetAll(Func<TEntity, bool>? Condition = null)
         {
-            return await hospitalDbContext.Set<TEntity>().ToListAsync();
+            if (Condition is null)
+            {
+                return await hospitalDbContext.Set<TEntity>().ToListAsync();
+            }
+            return  hospitalDbContext.Set<TEntity>().Where(Condition).ToList();
         }
 
         public void Update(TEntity e)

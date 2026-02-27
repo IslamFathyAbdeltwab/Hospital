@@ -12,7 +12,7 @@ namespace Hosptial.BLL.ViewModels.BookingViewModels
         public int Id { get; set; }
         public DateTime ConsultationTime { get; set; }
         public DateTime End { get; set; }
-        public PatientViewModel PatientName { get; set; }
+        public PatientViewModel Patient { get; set; }
         public DateTime AppointmentDate { get; set; }
         public string Status { get; set; }
     }
