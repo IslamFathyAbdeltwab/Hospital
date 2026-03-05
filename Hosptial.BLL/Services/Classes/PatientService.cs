@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace Hosptial.BLL.Services.Classes
 {
-    internal class PatientService : IPatientService
+    public class PatientService : IPatientService
     {
         private readonly IUniteOfWork _unitOfWork;
         private readonly IGenaricRepo<Patient> _patientRepo;

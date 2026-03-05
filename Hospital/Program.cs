@@ -1,5 +1,6 @@
 
 
+using Hosptial.BLL.Common;
 using Hosptial.BLL.Profiles;
 using Hosptital.DAL.Common;
 using Hosptital.DAL.Data.Contexts;
@@ -38,6 +39,7 @@ namespace Hospital
             #endregion
 
             AddDALService.AddDAL(builder.Services);
+            AddBLLService.AddBLL(builder.Services);
 
 
 

@@ -1,14 +1,18 @@
 ﻿using Hosptial.BLL.Services.Interfaces;
+using Hosptital.DAL.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Hospital.Controllers
 {
-    public class DoctorContoller(IDoctorService doctorService) : Controller
+    [ApiController]
+    [Route("api/{Contoller}")]
+    public class DoctorContoller(IDoctorService doctorService) : ControllerBase
     {
-        public JsonResult Index(int doctorId)
+        [HttpGet("{doctorId}")]
+        public ActionResult Index(int doctorId)
         {
-           var doctor = doctorService.Get(doctorId);
-           return Json(doctor);
+            var doctor = doctorService.Get(doctorId);
+            return Ok(doctor);
         }
     }
 }
