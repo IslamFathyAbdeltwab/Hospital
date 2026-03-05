@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Hosptial.BLL.Services.Interfaces
 {
-    internal interface IDoctorService
+    public interface IDoctorService
     {
         public Task<bool> Add(AddDoctorViewModel doctor);
         public Task<DoctorViewModel?> Get(int id);
