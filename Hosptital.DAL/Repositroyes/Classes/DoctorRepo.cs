@@ -16,15 +16,13 @@ namespace Hosptital.DAL.Repositroyes.Classes
 
         public async Task<List<Doctor>> GetIncludeSpeciality(int specialityId)
         {
-            return await context.Doctors.Where(d=>d.SpecialityId==specialityId).Include(d => d.Speciality).ToListAsync() ;
-                        
+            return await context.Doctors.Where(d=>d.SpecialityId==specialityId).Include(d => d.Speciality).Include(d=>d.User).ToListAsync() ;                      
         }
-
         public async Task<Doctor?> GetIncludeSpecialityAndAppointments(int id)
         {
             return await context.Doctors
-                .Include(d => d.Speciality)
-                .Include(d => d.DoctorAvailabilities)
+                .Include(d => d.Speciality)         
+                .Include(d=>d.User)
                 .FirstOrDefaultAsync(d => d.Id == id);
         }
     }

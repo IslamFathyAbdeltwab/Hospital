@@ -12,6 +12,7 @@ namespace Hospital.Controllers
         public async Task<ActionResult> Index(int doctorId)
         {
             var doctor = await doctorService.Get(doctorId);
+          
             return Ok(doctor);
         }
     }

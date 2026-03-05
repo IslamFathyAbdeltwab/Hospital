@@ -29,6 +29,8 @@ namespace Hosptial.BLL.Services.Classes
             IDoctorRepo doctorRepo,
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
+           
+
             IMapper mapper)
         {
             _unitOfWork = unitOfWork;
@@ -78,6 +80,7 @@ namespace Hosptial.BLL.Services.Classes
 
             var doctor = await _doctorRepo.GetIncludeSpecialityAndAppointments(id);
             if (doctor is null) return null;
+            
 
             var viewModel = _mapper.Map<DoctorViewModel>(doctor);
 
