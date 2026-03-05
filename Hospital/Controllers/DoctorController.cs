@@ -9,9 +9,9 @@ namespace Hospital.Controllers
     public class DoctorContoller(IDoctorService doctorService) : ControllerBase
     {
         [HttpGet("{doctorId}")]
-        public ActionResult Index(int doctorId)
+        public async Task<ActionResult> Index(int doctorId)
         {
-            var doctor = doctorService.Get(doctorId);
+            var doctor = await doctorService.Get(doctorId);
             return Ok(doctor);
         }
     }
