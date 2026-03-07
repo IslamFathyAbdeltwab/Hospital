@@ -13,6 +13,7 @@ namespace Hosptial.BLL.ViewModels.DoctorAvailabilityViewModels
         [Required]
         [ForeignKey("Doctor")]
         public int DoctorId { get; set; }
+       
 
         [Required(ErrorMessage = "Available date and time is required")]
         [DataType(DataType.DateTime)]

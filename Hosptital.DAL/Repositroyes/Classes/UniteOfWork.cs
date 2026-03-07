@@ -38,5 +38,10 @@ namespace Hosptital.DAL.Repositroyes.Classes
                 return genaricRepo;
             }
         }
+
+        public async Task<int> SaveChangesAsync()
+        {
+            return await hospitalDbContext.SaveChangesAsync();
+        }
     }
 }

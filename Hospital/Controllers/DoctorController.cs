@@ -41,15 +41,15 @@ namespace Hospital.Controllers
         }
 
         // Get Doctor Availabilitie
-        [HttpGet("availabilities/{doctorId}")]
-        public async Task<ActionResult> GetDoctorAvailabilitie(int doctorId)
+        [HttpGet("availabilitie/{id}")]
+        public async Task<ActionResult> GetAvailabilitie(int id)
         {
-            var availabilities = await doctorAvailabilityService.Get(doctorId);
+            var availabilities = await doctorAvailabilityService.Get(id);
             return Ok(availabilities);
         }
 
         // Get All Doctor Availabilities
-        [HttpGet("availabilities")]
+        [HttpGet("availabilities/{doctorId}")]
         public async Task<ActionResult> GetAllDoctorAvailabilities(int doctorId)
         {
             var availabilities = await doctorAvailabilityService.GetAll(doctorId);
@@ -65,7 +65,7 @@ namespace Hospital.Controllers
         }
 
 
-        [HttpDelete("availability")]
+        [HttpDelete("availability/{Id}")]
         public async Task<ActionResult> DeleteAvailbity(int Id)
         {
             var deletedDoctor = await doctorAvailabilityService.Delete(Id);

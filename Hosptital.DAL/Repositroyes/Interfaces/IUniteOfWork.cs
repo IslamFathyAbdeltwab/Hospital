@@ -11,5 +11,6 @@ namespace Hosptital.DAL.Repositroyes.Interfaces
     {
         IGenaricRepo<TEntity> GetGenaricRepo<TEntity>() where TEntity : BaseEntity ;
         int SaveChanges();
+        Task<int> SaveChangesAsync();
     }
 }

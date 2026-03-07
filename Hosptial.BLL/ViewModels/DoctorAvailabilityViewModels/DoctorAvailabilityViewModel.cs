@@ -9,7 +9,7 @@ namespace Hosptial.BLL.ViewModels.DoctorAvailabilityViewModels
 {
     public class DoctorAvailabilityViewModel
     {
-        public DoctorAvailability doctorAvailability;
+        public DoctorAvailability doctorAvailability { get; set; }
         public bool Book_Complete { get; set; }
     }
 }

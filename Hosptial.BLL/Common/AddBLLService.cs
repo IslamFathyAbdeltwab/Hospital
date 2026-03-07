@@ -28,6 +28,7 @@ namespace Hosptial.BLL.Common
                 m.AddProfile(new DoctorProfile());
                 m.AddProfile(new PatientProfile());
                 m.AddProfile(new BookingProfile());
+                m.AddProfile(new DoctorAvailabilityProfile());
 
 
 
