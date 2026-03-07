@@ -78,24 +78,20 @@ namespace Hosptial.BLL.Services.Classes
         {
             if (id <= 0) return null;
 
-            var doctor = await _doctorRepo.GetIncludeSpecialityAndAppointments(id);
+            var doctor = await _doctorRepo.Get(id);        //need to include speciality and doctor availabilities
             if (doctor is null) return null;
             
 
             var viewModel = _mapper.Map<DoctorViewModel>(doctor);
 
-            viewModel.DoctorAvailabilites = doctor.DoctorAvailabilities?
-                .Select(a => new DoctorAvailabilityViewModel
-                {
-                    doctorAvailability = a
-                }).ToList();
 
             return viewModel;
         }
 
-        public async Task<List<DoctorsViewModel>> GetAll(int specialityId)
+        public async Task<List<DoctorsViewModel>> GetAll()
         {
-            var doctors = await _doctorRepo.GetIncludeSpeciality(specialityId);
+            var doctors = await _doctorRepo.GetAll(); // need to include speciality and doctor availabilities 
+            
 
             if (doctors == null || !doctors.Any())
                 return new List<DoctorsViewModel>();

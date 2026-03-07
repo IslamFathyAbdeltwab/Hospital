@@ -10,7 +10,7 @@ namespace Hosptial.BLL.ViewModels.DoctorViewModels
     public class DoctorViewModel:DoctorsViewModel
     {
         
-        public List<DoctorAvailabilityViewModel> DoctorAvailabilites { get; set; } 
+   
        
     }
 }

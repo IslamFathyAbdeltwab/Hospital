@@ -15,7 +15,7 @@ namespace Hosptial.BLL.Services.Interfaces
         public Task<DoctorViewModel?> Get(int id);
 
   
-        public Task<List<DoctorsViewModel>> GetAll(int specialityId);
+        public Task<List<DoctorsViewModel>> GetAll();
         public Task<bool> Update(UpdateDoctorViewModel doctor);
         public Task<bool> Delete(int id);
 
