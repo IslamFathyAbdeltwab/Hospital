@@ -10,24 +10,27 @@ using System.Threading.Tasks;
 
 namespace Hosptital.DAL.Repositroyes.Classes
 {
-    public class GenaricRepo<TEntity>(HospitalDbContext hospitalDbContext): IGenaricRepo<TEntity> where TEntity : BaseEntity
+    public class GenaricRepo<TEntity>(HospitalDbContext hospitalDbContext) : IGenaricRepo<TEntity> where TEntity : BaseEntity
     {
-        public void  Add(TEntity e)
+        public void Add(TEntity e)
         {
-              hospitalDbContext.Set<TEntity>().Add(e);
+            hospitalDbContext.Set<TEntity>().Add(e);
         }
 
         public void Delete(TEntity e)
         {
-             hospitalDbContext.Set<TEntity>().Remove(e);
+            hospitalDbContext.Set<TEntity>().Remove(e);
         }
 
         public async Task<TEntity?> Get(int id)
         {
-          return await hospitalDbContext.Set<TEntity>().FindAsync(id);
+            return await hospitalDbContext.Set<TEntity>().FindAsync(id);
         }
 
-      
+        public async Task<TEntity?> Get(IBaseSpecification<TEntity> baseSpecification)
+        {
+            return await QueryEvlouter.ApplySpecification(hospitalDbContext.Set<TEntity>(), baseSpecification).FirstOrDefaultAsync();
+        }
 
         public async Task<List<TEntity?>> GetAll(Func<TEntity, bool>? Condition = null)
         {
@@ -35,12 +38,12 @@ namespace Hosptital.DAL.Repositroyes.Classes
             {
                 return await hospitalDbContext.Set<TEntity>().ToListAsync();
             }
-            return  hospitalDbContext.Set<TEntity>().Where(Condition).ToList();
+            return hospitalDbContext.Set<TEntity>().Where(Condition).ToList();
         }
 
         public void Update(TEntity e)
         {
-           hospitalDbContext.Set<TEntity>().Update(e);
+            hospitalDbContext.Set<TEntity>().Update(e);
         }
     }
 }

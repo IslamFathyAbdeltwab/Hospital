@@ -18,6 +18,9 @@ namespace Hosptial.BLL.Common
             services.AddScoped<IPatientService, PatientService>();
             services.AddScoped<IBookingService, BookingService>();
             services.AddScoped<IDoctorService, DoctorService>();
+            services.AddScoped<IDoctorAvailabilityService, DoctorAvailabilityService>();
+
+
 
             services.AddAutoMapper(m =>
             {

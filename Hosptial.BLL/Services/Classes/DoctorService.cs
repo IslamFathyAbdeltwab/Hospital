@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Hosptial.BLL.Services.Interfaces;
+using Hosptial.BLL.Specification;
 using Hosptial.BLL.ViewModels.Common;
 using Hosptial.BLL.ViewModels.DoctorAvailabilityViewModels;
 using Hosptial.BLL.ViewModels.DoctorViewModels;
@@ -78,7 +79,8 @@ namespace Hosptial.BLL.Services.Classes
         {
             if (id <= 0) return null;
 
-            var doctor = await _doctorRepo.Get(id);        //need to include speciality and doctor availabilities
+            var spec = new DoctorSpecification(id);
+            var doctor = await _doctorRepo.Get(spec);        //need to include speciality and doctor availabilities
             if (doctor is null) return null;
             
 
