@@ -58,7 +58,7 @@ namespace Hosptial.BLL.Services.Classes
             if (!result.Succeeded)
                 return false;
 
-            doctor.User = user;
+             doctor.User = user;
 
              _doctorRepo.Add(doctor);
             return  _unitOfWork.SaveChanges() > 0;
@@ -119,10 +119,13 @@ namespace Hosptial.BLL.Services.Classes
 
         public async Task<bool> Login(LoginViewModel model)
         {
-            if (model is null) return false;
+            if (model == null) return false;
+
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user == null) return false;
 
             var result = await _signInManager.PasswordSignInAsync(
-                model.Email,
+                user.UserName,
                 model.Password,
                 model.RemeberME,
                 lockoutOnFailure: false);

@@ -1,4 +1,5 @@
 ﻿using Hosptial.BLL.Services.Interfaces;
+using Hosptial.BLL.ViewModels.Common;
 using Hosptial.BLL.ViewModels.DoctorAvailabilityViewModels;
 using Hosptial.BLL.ViewModels.DoctorViewModels;
 using Hosptital.DAL.Entities;
@@ -7,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Hospital.Controllers
 {
     [ApiController]
-    [Route("api/{Contoller}")]
+    [Route("api/Doctor")]
     public class DoctorContoller(IDoctorService doctorService, IDoctorAvailabilityService doctorAvailabilityService) : ControllerBase
     {
 
@@ -27,6 +28,37 @@ namespace Hospital.Controllers
             var updatedDoctor = await doctorService.Update(doctor);
             return Ok(updatedDoctor);
         } 
+
+
+        // login 
+        [HttpPost("Login")] // login doctor
+        public async Task<ActionResult> Login(LoginViewModel loginView)
+        {
+            var entered = await doctorService.Login(loginView);
+            if (entered)
+            {
+                return Ok("Login successful");
+            }
+            else
+            {
+                return Unauthorized("Invalid email or password");
+            }
+        }
+
+        // register
+        [HttpPost("Register")] // register doctor
+        public async Task<ActionResult> Register(AddDoctorViewModel doctor)
+        {
+            var createdDoctor = await doctorService.Add(doctor);
+            if (createdDoctor)
+            {
+                return Ok(createdDoctor);
+            }
+            else
+            {
+                return BadRequest("Failed to create doctor profile");
+            }
+        }
 
 
 
