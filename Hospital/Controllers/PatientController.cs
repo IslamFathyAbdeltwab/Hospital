@@ -30,6 +30,7 @@ namespace Hospital.Controllers
         [HttpPost("Register")]
         public async Task<ActionResult> Register(RegisterPatientViewModel registerView)
         {
+            //check the modelstate
             var registered = await patientService.Register(registerView);
             if (registered)
             {
@@ -64,6 +65,7 @@ namespace Hospital.Controllers
             }
         }
        
+
       
 
   

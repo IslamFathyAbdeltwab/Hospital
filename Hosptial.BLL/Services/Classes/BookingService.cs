@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Hosptial.BLL.Services.Interfaces;
+using Hosptial.BLL.Specification;
 using Hosptial.BLL.ViewModels.BookingViewModels;
 using Hosptital.DAL.Entities;
 using Hosptital.DAL.Repositroyes.Interfaces;
@@ -112,6 +113,15 @@ namespace Hosptial.BLL.Services.Classes
             if (booking == null)
                 return null;
             return _mapper.Map<GetBookViewModel>(booking);
+        }
+
+        public async Task<List<GetBookViewModel>> GetBookedPatients(int availabilityId)
+        {
+            var spec=new BookingSpecification(availabilityId);
+            var patients = await _bookingRepo.GetAll(spec);
+            return _mapper.Map<List<GetBookViewModel>>(patients);
+            
+
         }
     }
 }

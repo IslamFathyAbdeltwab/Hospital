@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Hosptial.BLL.Services.Interfaces;
 using Hosptial.BLL.Specification;
+using Hosptial.BLL.ViewModels.BookingViewModels;
 using Hosptial.BLL.ViewModels.Common;
 using Hosptial.BLL.ViewModels.DoctorAvailabilityViewModels;
 using Hosptial.BLL.ViewModels.DoctorViewModels;
@@ -23,6 +24,7 @@ namespace Hosptial.BLL.Services.Classes
         private readonly IDoctorRepo _doctorRepo;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly IBookingService bookingService;
         private readonly IMapper _mapper;
 
         public DoctorService(
@@ -30,7 +32,8 @@ namespace Hosptial.BLL.Services.Classes
             IDoctorRepo doctorRepo,
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
-           
+            IBookingService bookingService,
+
 
             IMapper mapper)
         {
@@ -38,6 +41,7 @@ namespace Hosptial.BLL.Services.Classes
             _doctorRepo = doctorRepo;
             _userManager = userManager;
             _signInManager = signInManager;
+            this.bookingService = bookingService;
             _mapper = mapper;
         }
 
@@ -58,10 +62,10 @@ namespace Hosptial.BLL.Services.Classes
             if (!result.Succeeded)
                 return false;
 
-             doctor.User = user;
+            doctor.User = user;
 
-             _doctorRepo.Add(doctor);
-            return  _unitOfWork.SaveChanges() > 0;
+            _doctorRepo.Add(doctor);
+            return _unitOfWork.SaveChanges() > 0;
         }
 
         public async Task<bool> Delete(int id)
@@ -72,7 +76,7 @@ namespace Hosptial.BLL.Services.Classes
             if (doctor is null) return false;
 
             _doctorRepo.Delete(doctor);
-            return  _unitOfWork.SaveChanges() > 0;
+            return _unitOfWork.SaveChanges() > 0;
         }
 
         public async Task<DoctorViewModel?> Get(int id)
@@ -82,7 +86,7 @@ namespace Hosptial.BLL.Services.Classes
             var spec = new DoctorSpecification(id);
             var doctor = await _doctorRepo.Get(spec);        //need to include speciality and doctor availabilities
             if (doctor is null) return null;
-            
+
 
             var viewModel = _mapper.Map<DoctorViewModel>(doctor);
 
@@ -93,7 +97,7 @@ namespace Hosptial.BLL.Services.Classes
         public async Task<List<DoctorsViewModel>> GetAll()
         {
             var doctors = await _doctorRepo.GetAll(); // need to include speciality and doctor availabilities 
-            
+
 
             if (doctors == null || !doctors.Any())
                 return new List<DoctorsViewModel>();
@@ -114,7 +118,7 @@ namespace Hosptial.BLL.Services.Classes
             doctor.SpecialityId = model.SpecialityId;
 
             _doctorRepo.Update(doctor);
-            return  _unitOfWork.SaveChanges() > 0;
+            return _unitOfWork.SaveChanges() > 0;
         }
 
         public async Task<bool> Login(LoginViewModel model)
@@ -153,9 +157,15 @@ namespace Hosptial.BLL.Services.Classes
 
             doctor.User = user;
 
-             _doctorRepo.Add(doctor);
-            return  _unitOfWork.SaveChanges() > 0;
+            _doctorRepo.Add(doctor);
+            return _unitOfWork.SaveChanges() > 0;
+        }
+
+        public async Task<List<GetBookViewModel>> GetBookingPatient(int avlId)
+        {
+            if (avlId <= 0) return null;
+            var patient = await bookingService.GetBookedPatients(avlId);
+            return patient;
         }
     }
-
 }

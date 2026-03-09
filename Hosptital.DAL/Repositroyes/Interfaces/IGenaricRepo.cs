@@ -12,7 +12,7 @@ namespace Hosptital.DAL.Repositroyes.Interfaces
         Task<TEntity> Get(int id);
         Task<TEntity> Get(IBaseSpecification<TEntity> baseSpecification);
 
-
+        Task<List<TEntity?>> GetAll(IBaseSpecification<TEntity> baseSpecification);
         Task<List<TEntity?>> GetAll(Func<TEntity, bool> ?Condition = null);
 
         void Add(TEntity e);

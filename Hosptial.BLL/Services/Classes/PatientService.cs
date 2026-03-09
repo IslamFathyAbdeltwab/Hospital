@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Hosptial.BLL.Services.Interfaces;
+using Hosptial.BLL.Specification;
 using Hosptial.BLL.ViewModels.Common;
 using Hosptial.BLL.ViewModels.PatientViewModels;
 using Hosptital.DAL.Entities;
@@ -63,8 +64,10 @@ namespace Hosptial.BLL.Services.Classes
         public async Task<PatientViewModel?> Get(int id)
         {
             if (id <= 0) return null;
+            var spec = new PatientSpecification(id);
+            
 
-            var patient = await _patientRepo.Get(id);
+            var patient = await _patientRepo.Get(spec);
             if (patient == null) return null;
 
             return _mapper.Map<PatientViewModel>(patient);
@@ -125,11 +128,14 @@ namespace Hosptial.BLL.Services.Classes
         {
             if (model == null) return false;
 
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user == null) return false;
+
             var result = await _signInManager.PasswordSignInAsync(
-                model.Email,
+                user.UserName,
                 model.Password,
                 model.RemeberME,
-                false);
+                lockoutOnFailure: false);
 
             return result.Succeeded;
         }

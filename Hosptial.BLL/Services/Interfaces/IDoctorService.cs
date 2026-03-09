@@ -1,4 +1,5 @@
-﻿using Hosptial.BLL.ViewModels.Common;
+﻿using Hosptial.BLL.ViewModels.BookingViewModels;
+using Hosptial.BLL.ViewModels.Common;
 using Hosptial.BLL.ViewModels.DoctorViewModels;
 using Hosptial.BLL.ViewModels.PatientViewModels;
 using System;
@@ -21,6 +22,7 @@ namespace Hosptial.BLL.Services.Interfaces
 
         Task<bool> Register(RegisterDoctorViewModel model);
         Task<bool> Login(LoginViewModel model);
+        public  Task<List<GetBookViewModel>> GetBookingPatient(int avlId);
 
     }
 }

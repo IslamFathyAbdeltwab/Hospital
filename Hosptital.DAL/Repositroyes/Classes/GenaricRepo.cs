@@ -41,6 +41,11 @@ namespace Hosptital.DAL.Repositroyes.Classes
             return hospitalDbContext.Set<TEntity>().Where(Condition).ToList();
         }
 
+        public async Task<List<TEntity?>> GetAll(IBaseSpecification<TEntity> baseSpecification)
+        {
+            return await QueryEvlouter.ApplySpecification(hospitalDbContext.Set<TEntity>(), baseSpecification).ToListAsync();
+        }
+
         public void Update(TEntity e)
         {
             hospitalDbContext.Set<TEntity>().Update(e);

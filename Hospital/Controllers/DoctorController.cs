@@ -27,7 +27,7 @@ namespace Hospital.Controllers
         {
             var updatedDoctor = await doctorService.Update(doctor);
             return Ok(updatedDoctor);
-        } 
+        }
 
 
         // login 
@@ -103,8 +103,15 @@ namespace Hospital.Controllers
             var deletedDoctor = await doctorAvailabilityService.Delete(Id);
             return Ok(deletedDoctor);
 
-        } 
+        }
         #endregion
-    }
+        [HttpGet("BookingPatients/{avlId}")]
 
+        public async Task<ActionResult> GetBookingPatient(int avlId)
+        {
+            var patients = await doctorService.GetBookingPatient(avlId);
+            return Ok(patients);
+        }
+
+    }
 }
