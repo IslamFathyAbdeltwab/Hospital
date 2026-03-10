@@ -1,5 +1,6 @@
 ﻿using Hosptial.BLL.Services.Interfaces;
 using Hosptial.BLL.ViewModels.PrescriptionViewModels;
+using Hosptital.DAL.Repositroyes.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,12 @@ namespace Hosptial.BLL.Services.Classes
 {
     public class PreScriptionService : IPrescriptionService
     {
+        private readonly IUniteOfWork uniteOfWork;
+
+        public PreScriptionService(IUniteOfWork uniteOfWork )
+        {
+            this.uniteOfWork = uniteOfWork;
+        }
         public Task<bool> Add(AddPrescriptionViewModel prescription)
         {
             throw new NotImplementedException();

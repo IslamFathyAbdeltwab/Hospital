@@ -24,5 +24,8 @@ namespace Hosptial.BLL.Services.Interfaces
         Task<bool> Login(LoginViewModel model);
         public  Task<List<GetBookViewModel>> GetBookingPatient(int avlId);
 
+
+        // create prescription for patient
+
     }
 }

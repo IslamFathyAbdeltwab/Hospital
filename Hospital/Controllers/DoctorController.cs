@@ -2,6 +2,7 @@
 using Hosptial.BLL.ViewModels.Common;
 using Hosptial.BLL.ViewModels.DoctorAvailabilityViewModels;
 using Hosptial.BLL.ViewModels.DoctorViewModels;
+using Hosptial.BLL.ViewModels.PrescriptionViewModels;
 using Hosptital.DAL.Entities;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,7 +10,7 @@ namespace Hospital.Controllers
 {
     [ApiController]
     [Route("api/Doctor")]
-    public class DoctorContoller(IDoctorService doctorService, IDoctorAvailabilityService doctorAvailabilityService) : ControllerBase
+    public class DoctorContoller(IDoctorService doctorService, IPrescriptionService prescriptionService, IDoctorAvailabilityService doctorAvailabilityService) : ControllerBase
     {
 
         #region Profile
@@ -105,13 +106,46 @@ namespace Hospital.Controllers
 
         }
         #endregion
-        [HttpGet("BookingPatients/{avlId}")]
 
+        [HttpGet("BookingPatients/{avlId}")]
         public async Task<ActionResult> GetBookingPatient(int avlId)
         {
             var patients = await doctorService.GetBookingPatient(avlId);
             return Ok(patients);
         }
+
+        // create prescription for patient
+        [HttpGet("Prescription")]
+        public async Task<ActionResult> CreatePrescription(AddPrescriptionViewModel addPrescription)
+        {
+            var created = await prescriptionService.Add(addPrescription);
+            if (created)
+                return Ok("Created Successfuly");
+            else
+                return BadRequest();
+        }
+
+
+        // get specific prescription
+        [HttpGet("Prescription/{presId}/{patientId}")]
+        public async Task<ActionResult> GetPrscription(int presId, int patientId)
+        {
+            var prescription = await prescriptionService.Get(presId, patientId);
+            return Ok(prescription);
+        }
+
+        // get all prescriptions
+        [HttpGet("Prescriptions/{patientId}")]
+        public async Task<ActionResult> GetAllPrescriptions(int patientId)
+        {
+            var pres = await prescriptionService.GetAll(patientId);
+            return Ok(pres);
+
+        }
+
+
+
+
 
     }
 }
