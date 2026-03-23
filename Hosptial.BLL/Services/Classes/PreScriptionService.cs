@@ -1,5 +1,7 @@
-﻿using Hosptial.BLL.Services.Interfaces;
+﻿using AutoMapper;
+using Hosptial.BLL.Services.Interfaces;
 using Hosptial.BLL.ViewModels.PrescriptionViewModels;
+using Hosptital.DAL.Entities;
 using Hosptital.DAL.Repositroyes.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -12,24 +14,41 @@ namespace Hosptial.BLL.Services.Classes
     public class PreScriptionService : IPrescriptionService
     {
         private readonly IUniteOfWork uniteOfWork;
+        private readonly IMapper mapper;
 
-        public PreScriptionService(IUniteOfWork uniteOfWork )
+        public PreScriptionService(IUniteOfWork uniteOfWork,IMapper mapper )
         {
             this.uniteOfWork = uniteOfWork;
+            this.mapper = mapper;
         }
-        public Task<bool> Add(AddPrescriptionViewModel prescription)
+        public async Task<bool> Add(AddPrescriptionViewModel prescription)
         {
-            throw new NotImplementedException();
+            uniteOfWork.GetGenaricRepo<Prescription>().Add(new Prescription
+            {
+                DoctorId = prescription.DoctorId,
+                PatientId = prescription.PatientId,
+                Treatments = prescription.Treatments
+
+            });
+            return await uniteOfWork.SaveChangesAsync() > 0;
         }
 
-        public Task<PrescriptionViewModel> Get(int doctorId, int patientId)
+        public async Task<PrescriptionViewModel> Get(int id)
         {
-            throw new NotImplementedException();
+            var prescription =await uniteOfWork.GetGenaricRepo<Prescription>().Get(id);
+            //need to include the treatments "islam"
+            return mapper.Map<PrescriptionViewModel>(prescription);
         }
 
-        public Task<List<PrescriptionViewModel>> GetAll(int patientId)
+        public async Task<List<PrescriptionViewModel>> GetAll(int patientId)
         {
-            throw new NotImplementedException();
+            var prescriptions=await uniteOfWork.GetGenaricRepo<Prescription>().GetAll(p => p.PatientId == patientId);
+
+            return mapper.Map<List<PrescriptionViewModel>>(prescriptions);
+
+
+
+
         }
    
     }
