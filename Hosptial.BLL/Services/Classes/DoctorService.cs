@@ -112,7 +112,7 @@ namespace Hosptial.BLL.Services.Classes
             var doctor = await _doctorRepo.Get(model.Id);
             if (doctor is null) return false;
 
-            doctor.User.UserName = model.Name;
+            //doctor.User.UserName = model.Name; // here dont't need to updata the docotr name
             doctor.Bio = model.Bio;
             doctor.YearsOfExperienc = model.YearsOfExperienc;
             doctor.SpecialityId = model.SpecialityId;
@@ -161,7 +161,7 @@ namespace Hosptial.BLL.Services.Classes
             return _unitOfWork.SaveChanges() > 0;
         }
 
-        public async Task<List<GetBookViewModel>> GetBookingPatient(int avlId)
+        public async Task<GetBookViewModel> GetBookingPatient(int avlId)
         {
             if (avlId <= 0) return null;
             var patient = await bookingService.GetBookedPatients(avlId);

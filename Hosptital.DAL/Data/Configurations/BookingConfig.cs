@@ -13,6 +13,7 @@ namespace Hosptital.DAL.Data.Configurations
     {
         override public void Configure(EntityTypeBuilder<Booking> builder)
         {
+
             
             builder.HasOne(x => x.Patient)
                    .WithOne()
@@ -22,6 +23,8 @@ namespace Hosptital.DAL.Data.Configurations
                    .WithOne()
                    .HasForeignKey<Booking>(b=>b.DoctorAvailabilityId)
                    .OnDelete(Microsoft.EntityFrameworkCore.DeleteBehavior.Cascade);
+
+            //builder.HasIndex(b => b.DoctorAvailabilityId);
 
 
         }

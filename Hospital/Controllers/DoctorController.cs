@@ -115,7 +115,7 @@ namespace Hospital.Controllers
         }
 
         // create prescription for patient
-        [HttpGet("Prescription")]
+        [HttpPost("Prescription")]
         public async Task<ActionResult> CreatePrescription(AddPrescriptionViewModel addPrescription)
         {
             var created = await prescriptionService.Add(addPrescription);
@@ -124,13 +124,13 @@ namespace Hospital.Controllers
             else
                 return BadRequest();
         }
-
+            
 
         // get specific prescription
-        [HttpGet("Prescription/{presId}/{patientId}")]
-        public async Task<ActionResult> GetPrscription(int presId, int patientId)
+        [HttpGet("Prescription/{presId}")]
+        public async Task<ActionResult> GetPrscription(int presId)
         {
-            var prescription = await prescriptionService.Get(presId, patientId);
+            var prescription = await prescriptionService.Get(presId);
             return Ok(prescription);
         }
 

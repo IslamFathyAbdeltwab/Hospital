@@ -2,11 +2,13 @@
 using Hosptial.BLL.Services.Interfaces;
 using Hosptial.BLL.Specification;
 using Hosptial.BLL.ViewModels.BookingViewModels;
+using Hosptial.BLL.ViewModels.PatientViewModels;
 using Hosptital.DAL.Entities;
 using Hosptital.DAL.Repositroyes.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -88,10 +90,10 @@ namespace Hosptial.BLL.Services.Classes
         }
 
         // ================= GET ALL =================
-        public async Task<List<GetBookViewModel>> GetAll(int availabilityId)
+        public async Task<GetBookViewModel> GetAll(int availabilityId)
         {
             if (availabilityId <= 0)
-                return new List<GetBookViewModel>();
+                return null;
 
             var bookings = await _bookingRepo
                 .GetAll(b => b.DoctorAvailabilityId == availabilityId);
@@ -99,9 +101,9 @@ namespace Hosptial.BLL.Services.Classes
 
 
             if (bookings == null || !bookings.Any())
-                return new List<GetBookViewModel>();
+                return null;
+            return _mapper.Map<GetBookViewModel>(bookings);
 
-            return _mapper.Map<List<GetBookViewModel>>(bookings);
         }
 
         // ================= GET BY ID =================
@@ -115,12 +117,25 @@ namespace Hosptial.BLL.Services.Classes
             return _mapper.Map<GetBookViewModel>(booking);
         }
 
-        public async Task<List<GetBookViewModel>> GetBookedPatients(int availabilityId)
+        public async Task<GetBookViewModel> GetBookedPatients(int availabilityId)
         {
-            var spec=new BookingSpecification(availabilityId);
+            var spec = new BookingSpecification(availabilityId);
             var patients = await _bookingRepo.GetAll(spec);
-            return _mapper.Map<List<GetBookViewModel>>(patients);
-            
+            var result = new GetBookViewModel
+            {
+                Id = patients.First().Id, // or any logic
+                ConsultationTime = patients.First().ConsultionTime,
+                AppointmentDate = patients.First().ConsultionTime.Date,
+                End = patients.First().ConsultionTime.AddMinutes(30),
+
+                Status = patients.First().Status.ToString(),
+
+                patients = _mapper.Map<List<PatientViewModel>>(
+        patients.Select(b => b.Patient).ToList()
+    )
+            };
+            return result;
+
 
         }
     }

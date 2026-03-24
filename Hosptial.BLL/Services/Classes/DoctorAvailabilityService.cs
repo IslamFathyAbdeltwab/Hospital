@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Hosptial.BLL.Services.Classes
 {
-    public class DoctorAvailabilityService(IMapper mapper,IUniteOfWork uniteOfWork) : IDoctorAvailabilityService
+    public class DoctorAvailabilityService(IMapper mapper,IUniteOfWork uniteOfWork ,IBookingService bookingService) : IDoctorAvailabilityService
     {
         public async Task<bool> Add(AddDoctorAvailabilityViewModel doctorAvailability)
         {
@@ -48,8 +48,14 @@ namespace Hosptial.BLL.Services.Classes
 
         }
 
-        public Task<bool> Update(UpdateDoctorAvailabilityViewModel Update)
+        public async Task<bool> Update(UpdateDoctorAvailabilityViewModel Update)
         {
+
+            //var booking = await bookingService.GetAll(Update.DoctorAvailabilityId);
+            //if(booking is null || boo)
+            //// check if availability booked or not from booking service
+            //// if booked return false
+            // else update the availability
             throw new NotImplementedException();
         }
     }

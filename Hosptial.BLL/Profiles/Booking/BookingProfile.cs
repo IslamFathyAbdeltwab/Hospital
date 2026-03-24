@@ -19,14 +19,20 @@ namespace Hosptial.BLL.Profiles
 
 
             CreateMap<Booking, GetBookViewModel>()
-             .ForMember(dest => dest.Patient,
-                 opt => opt.MapFrom(src => src.Patient))
-           
-             .ForMember(dest => dest.ConsultationTime,
-                 opt => opt.MapFrom(src => src.ConsultionTime))
-        
-             .ForMember(dest => dest.Status,
-                 opt => opt.MapFrom(src => src.Status.ToString()));
+     .ForMember(dest => dest.patients,
+         opt => opt.MapFrom(src => new List<Patient> { src.Patient }))
+
+     .ForMember(dest => dest.ConsultationTime,
+         opt => opt.MapFrom(src => src.ConsultionTime))
+
+     .ForMember(dest => dest.Status,
+         opt => opt.MapFrom(src => src.Status.ToString()))
+
+     .ForMember(dest => dest.AppointmentDate,
+         opt => opt.MapFrom(src => src.ConsultionTime.Date))
+
+     .ForMember(dest => dest.End,
+         opt => opt.MapFrom(src => src.ConsultionTime.AddMinutes(30))); // adjust duration if needed
         }
     }
 }

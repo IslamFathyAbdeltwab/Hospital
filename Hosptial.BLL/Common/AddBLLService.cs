@@ -19,6 +19,7 @@ namespace Hosptial.BLL.Common
             services.AddScoped<IBookingService, BookingService>();
             services.AddScoped<IDoctorService, DoctorService>();
             services.AddScoped<IDoctorAvailabilityService, DoctorAvailabilityService>();
+            services.AddScoped<IPrescriptionService, PreScriptionService>();
 
 
 
