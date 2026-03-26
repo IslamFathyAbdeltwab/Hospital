@@ -94,11 +94,10 @@ namespace Hosptial.BLL.Services.Classes
             return viewModel;
         }
 
-        public async Task<List<DoctorsViewModel>> GetAll()
+        public async Task<List<DoctorsViewModel>> GetAll(int specialityId)
         {
-            var doctors = await _doctorRepo.GetAll(); // need to include speciality and doctor availabilities 
-
-
+            var spec = new DoctorGetAllSpecification(specialityId);
+            var doctors = await _doctorRepo.GetAll(spec); 
             if (doctors == null || !doctors.Any())
                 return new List<DoctorsViewModel>();
 
@@ -169,3 +168,4 @@ namespace Hosptial.BLL.Services.Classes
         }
     }
 }
+//"islam": hint the register like add functionalty so delete one 

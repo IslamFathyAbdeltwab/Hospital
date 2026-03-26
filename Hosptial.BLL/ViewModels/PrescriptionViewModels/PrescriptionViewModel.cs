@@ -1,4 +1,5 @@
-﻿using Hosptital.DAL.Entities;
+﻿using Hosptial.BLL.ViewModels.DoctorViewModels;
+using Hosptital.DAL.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,7 @@ namespace Hosptial.BLL.ViewModels.PrescriptionViewModels
     {
         public ICollection<Treatment> Treatments { get; set; } = new List<Treatment>();
         public int DoctorId { get; set; }
+        public DoctorViewModel Doctor { get; set; }
         public int PatientId { get; set; }
         public int Id { get; set; }
     }

@@ -25,6 +25,12 @@ namespace Hosptial.BLL.Services.Classes
             var doctorAvailability = await uniteOfWork.GetGenaricRepo<DoctorAvailability>().Get(Id);
             if(doctorAvailability is  null)
                 return false;
+            var bookingPatients =await bookingService.GetAll(Id);
+            if(bookingPatients.patients is not null && (bookingPatients.patients.Any()&& bookingPatients.End >DateTime.Now))
+            {
+                return false;
+                //if doctor need to cancel must refund to the patients money for reservation 
+            }
             uniteOfWork.GetGenaricRepo<DoctorAvailability>().Delete(doctorAvailability);
             return await uniteOfWork.SaveChangesAsync() > 0;
         }
@@ -51,12 +57,12 @@ namespace Hosptial.BLL.Services.Classes
         public async Task<bool> Update(UpdateDoctorAvailabilityViewModel Update)
         {
 
-            //var booking = await bookingService.GetAll(Update.DoctorAvailabilityId);
-            //if(booking is null || boo)
-            //// check if availability booked or not from booking service
-            //// if booked return false
-            // else update the availability
-            throw new NotImplementedException();
+            var booking = await bookingService.GetAll(Update.DoctorAvailabilityId);
+            if (booking.patients is null || booking.patients.Count != 0) return false;
+            var docotravailability = mapper.Map<UpdateDoctorAvailabilityViewModel, DoctorAvailability>(Update);
+            uniteOfWork.GetGenaricRepo<DoctorAvailability>().Update(docotravailability);
+            return await uniteOfWork.SaveChangesAsync()>0;
+                
         }
     }
 }

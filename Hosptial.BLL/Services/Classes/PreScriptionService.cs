@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Hosptial.BLL.Services.Interfaces;
+using Hosptial.BLL.Specification;
 using Hosptial.BLL.ViewModels.PrescriptionViewModels;
 using Hosptital.DAL.Entities;
 using Hosptital.DAL.Repositroyes.Interfaces;
@@ -23,6 +24,7 @@ namespace Hosptial.BLL.Services.Classes
         }
         public async Task<bool> Add(AddPrescriptionViewModel prescription)
         {
+            if (prescription is null) return false;
             uniteOfWork.GetGenaricRepo<Prescription>().Add(new Prescription
             {
                 DoctorId = prescription.DoctorId,
@@ -35,14 +37,17 @@ namespace Hosptial.BLL.Services.Classes
 
         public async Task<PrescriptionViewModel> Get(int id)
         {
-            var prescription =await uniteOfWork.GetGenaricRepo<Prescription>().Get(id);
-            //need to include the treatments "islam"
+            if (id <= 0) return null;
+            var spec = new PrescriptionSpecification(id);
+            var prescription =await uniteOfWork.GetGenaricRepo<Prescription>().Get(spec);
             return mapper.Map<PrescriptionViewModel>(prescription);
         }
 
         public async Task<List<PrescriptionViewModel>> GetAll(int patientId)
         {
-            var prescriptions=await uniteOfWork.GetGenaricRepo<Prescription>().GetAll(p => p.PatientId == patientId);
+            var spec = new PrescriptionGetAllSpecification(patientId);
+
+            var prescriptions=await uniteOfWork.GetGenaricRepo<Prescription>().GetAll(spec);
 
             return mapper.Map<List<PrescriptionViewModel>>(prescriptions);
 

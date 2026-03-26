@@ -13,10 +13,8 @@ namespace Hosptial.BLL.Services.Interfaces
     public interface IDoctorService
     {
         public Task<bool> Add(AddDoctorViewModel doctor);
-        public Task<DoctorViewModel?> Get(int id);
-
-  
-        public Task<List<DoctorsViewModel>> GetAll();
+        public Task<DoctorViewModel?> Get(int id); 
+        public Task<List<DoctorsViewModel>> GetAll(int specialityId);
         public Task<bool> Update(UpdateDoctorViewModel doctor);
         public Task<bool> Delete(int id);
 

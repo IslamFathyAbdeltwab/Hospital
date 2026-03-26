@@ -14,7 +14,7 @@ namespace Hosptial.BLL.Profiles
         public DoctorAvailabilityProfile()
         {
             CreateMap<AddDoctorAvailabilityViewModel, DoctorAvailability>().ReverseMap();
-
+            CreateMap<UpdateDoctorAvailabilityViewModel, DoctorAvailability>().ReverseMap();
             // Entity -> ViewModel
             CreateMap<DoctorAvailability, DoctorAvailabilityViewModel>()
                 .ForMember(dest => dest.doctorAvailability,

@@ -26,7 +26,8 @@ namespace Hosptital.DAL.Data.Configurations
               .OnDelete(DeleteBehavior.Restrict);
            
             builder.HasMany(p => p.Treatments)
-            .WithOne(x => x.Prescription)
+            .WithOne()//.WithOne(x => x.Prescription) "islam" delete it becose not need navigation prop here
+            //and if let it will do cycle when get prescription ;
             .HasForeignKey(t => t.PrescriptionId)
             .OnDelete(DeleteBehavior.Cascade);
         }

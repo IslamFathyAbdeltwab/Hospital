@@ -110,8 +110,7 @@ namespace Hosptial.BLL.Services.Classes
         public async Task<GetBookViewModel?> GetById(int id)
         {
             if (id <= 0) return null;
-            var booking = await _bookingRepo
-                .Get(id);
+            var booking = await _bookingRepo.Get(id);
             if (booking == null)
                 return null;
             return _mapper.Map<GetBookViewModel>(booking);

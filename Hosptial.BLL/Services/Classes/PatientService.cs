@@ -141,3 +141,4 @@ namespace Hosptial.BLL.Services.Classes
         }
     }
 }
+// "islam": the register like the add functionality so delete one ;
