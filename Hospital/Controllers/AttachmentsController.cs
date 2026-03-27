@@ -1,4 +1,5 @@
 ﻿using Hosptial.BLL.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
 using System.IdentityModel.Tokens.Jwt;
@@ -16,6 +17,7 @@ namespace Hospital.Controllers
             _attachmentService = attachmentService;
         }
 
+        [Authorize]
         [HttpPost("upload")]
         public async Task<IActionResult> Upload(
             IFormFile file  ,

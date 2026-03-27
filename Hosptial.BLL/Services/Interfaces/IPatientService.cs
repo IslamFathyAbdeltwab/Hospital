@@ -10,13 +10,13 @@ namespace Hosptial.BLL.Services.Interfaces
 {
     public interface IPatientService
     {
-       public Task<PatientViewModel> Get(int id);
-       public Task<bool> Add(AddPatientViewModel patient);
+       public Task<PatientViewModel?> Get(int id);
+       //public Task<bool> Add(AddPatientViewModel patient);
        public Task<bool> Update(UpdatePatientViewModel patient);
        public Task<bool> Delete(int id);
 
-        Task<bool> Register(RegisterPatientViewModel model);
-        Task<bool> Login(LoginViewModel model);
+        Task<ValidUserViewModel?> Register(RegisterPatientViewModel model);
+        Task<ValidUserViewModel?> Login(LoginViewModel model);
 
 
     }

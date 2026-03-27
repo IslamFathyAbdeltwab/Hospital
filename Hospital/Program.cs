@@ -6,9 +6,12 @@ using Hosptital.DAL.Common;
 using Hosptital.DAL.Data.Contexts;
 using Hosptital.DAL.Entities.Base;
 using Hosptital.DAL.Repositroyes.Interfaces;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Hospital
@@ -24,6 +27,28 @@ namespace Hospital
             builder.Services.AddControllers();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
+            
+
+            builder.Services.AddAuthentication(configOptions =>
+            {
+                configOptions.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                configOptions.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                configOptions.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+
+            }).AddJwtBearer(opt =>
+            {
+                opt.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                {
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ValidateLifetime = true,
+                    RoleClaimType = ClaimTypes.Role,
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!)),
+                    ClockSkew = TimeSpan.Zero
+                };
+            });
+            builder.Services.AddAuthorization();
 
             #region Configur DataBase
             builder.Services.AddDbContext<HospitalDbContext>(options =>
@@ -32,10 +57,14 @@ namespace Hospital
 
               });
             builder.Services
-              .AddIdentity<ApplicationUser, IdentityRole<int>>()
-              .AddRoles<IdentityRole<int>>()
-              .AddEntityFrameworkStores<HospitalDbContext>()
-              .AddDefaultTokenProviders();
+    .AddIdentityCore<ApplicationUser>(options =>
+    {
+        options.Password.RequireDigit = true;
+        options.Password.RequireUppercase = false;
+    })
+    .AddRoles<IdentityRole<int>>()  // keep roles
+    .AddEntityFrameworkStores<HospitalDbContext>()
+    .AddDefaultTokenProviders();
             #endregion
 
             AddDALService.AddDAL(builder.Services);
@@ -60,6 +89,7 @@ namespace Hospital
             }
 
             app.UseHttpsRedirection();
+            app.UseAuthentication();
 
             app.UseAuthorization();
 
