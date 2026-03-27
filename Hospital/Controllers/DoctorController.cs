@@ -36,9 +36,9 @@ namespace Hospital.Controllers
         public async Task<ActionResult> Login(LoginViewModel loginView)
         {
             var entered = await doctorService.Login(loginView);
-            if (entered)
+            if (entered != null)
             {
-                return Ok("Login successful");
+                return Ok(entered);
             }
             else
             {
@@ -48,10 +48,10 @@ namespace Hospital.Controllers
 
         // register
         [HttpPost("Register")] // register doctor
-        public async Task<ActionResult> Register(AddDoctorViewModel doctor)
+        public async Task<ActionResult> Register(RegisterDoctorViewModel doctor)
         {
-            var createdDoctor = await doctorService.Add(doctor);
-            if (createdDoctor)
+            var createdDoctor = await doctorService.Register(doctor);
+            if (createdDoctor != null)
             {
                 return Ok(createdDoctor);
             }

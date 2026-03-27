@@ -1,5 +1,7 @@
 ﻿using Hosptial.BLL.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace Hospital.Controllers
 {
@@ -16,14 +18,24 @@ namespace Hospital.Controllers
 
         [HttpPost("upload")]
         public async Task<IActionResult> Upload(
-            IFormFile? file  ,
+            IFormFile file  ,
            [FromForm] int patientId,
-        [FromForm] int appointmentId,
-          [FromForm] string? uploadedBy)
+        [FromForm] int appointmentId
+          )
         {
+            string uploadedBy;
             try
             {
-                var result = await _attachmentService.UploadAsync(file, patientId, appointmentId, uploadedBy);
+                if (User.IsInRole("Doctor"))
+                    uploadedBy = "Doctor";
+                else if (User.IsInRole("Patient"))
+                    uploadedBy = "Patient";
+                else
+                    uploadedBy = "Admin";
+
+                var result = await _attachmentService
+                    .UploadAsync(file, patientId, appointmentId, uploadedBy);
+
                 return Ok(result);
             }
             catch (Exception ex)
