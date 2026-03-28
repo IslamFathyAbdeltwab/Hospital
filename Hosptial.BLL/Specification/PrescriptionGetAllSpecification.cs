@@ -14,6 +14,9 @@ namespace Hosptial.BLL.Specification
         {
             AddInclude(p => p.Doctor);
             AddInclude(p => p.Treatments);
+            AddInclude(p => p.Doctor.User);
+            AddInclude(p => p.Doctor.Speciality);
+
         }
     }
 }

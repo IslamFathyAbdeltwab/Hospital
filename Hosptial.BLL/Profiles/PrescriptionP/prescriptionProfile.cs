@@ -18,9 +18,9 @@ namespace Hosptial.BLL.Profiles.Prescription
                 // AddBookViewModel → Booking
                 CreateMap<PrescriptionViewModel, Hosptital.DAL.Entities.Prescription> ().ReverseMap();
 
+          
 
-                
-            }
+        }
         }
     }
 
