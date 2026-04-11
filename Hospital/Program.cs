@@ -1,5 +1,3 @@
-
-
 using Hosptial.BLL.Common;
 using Hosptial.BLL.Profiles;
 using Hosptital.DAL.Common;
@@ -22,13 +20,29 @@ namespace Hospital
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
-
+            // =========================
+            // Add Controllers + OpenAPI
+            // =========================
             builder.Services.AddControllers();
-            // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
-            
 
+            // =========================
+            // CORS CONFIGURATION (FIX)
+            // =========================
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAngularDev", policy =>
+                {
+                    policy
+                        .WithOrigins("http://localhost:4200")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                });
+            });
+
+            // =========================
+            // JWT AUTHENTICATION
+            // =========================
             builder.Services.AddAuthentication(configOptions =>
             {
                 configOptions.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -44,55 +58,64 @@ namespace Hospital
                     ValidateLifetime = true,
                     RoleClaimType = ClaimTypes.Role,
                     ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!)),
+                    IssuerSigningKey = new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(
+                        System.Text.Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!)),
                     ClockSkew = TimeSpan.Zero
                 };
             });
+
             builder.Services.AddAuthorization();
 
-            #region Configur DataBase
+            // =========================
+            // DATABASE CONFIGURATION
+            // =========================
             builder.Services.AddDbContext<HospitalDbContext>(options =>
-              {
-                  options.UseSqlServer(builder.Configuration.GetConnectionString("Main"));
+            {
+                options.UseSqlServer(builder.Configuration.GetConnectionString("Main"));
+            });
 
-              });
             builder.Services
-    .AddIdentityCore<ApplicationUser>(options =>
-    {
-        options.Password.RequireDigit = true;
-        options.Password.RequireUppercase = false;
-    })
-    .AddRoles<IdentityRole<int>>()  // keep roles
-    .AddEntityFrameworkStores<HospitalDbContext>()
-    .AddDefaultTokenProviders();
-            #endregion
+                .AddIdentityCore<ApplicationUser>(options =>
+                {
+                    options.Password.RequireDigit = true;
+                    options.Password.RequireUppercase = false;
+                })
+                .AddRoles<IdentityRole<int>>()
+                .AddEntityFrameworkStores<HospitalDbContext>()
+                .AddDefaultTokenProviders();
 
+            // =========================
+            // DAL + BLL SERVICES
+            // =========================
             AddDALService.AddDAL(builder.Services);
             AddBLLService.AddBLL(builder.Services);
 
-
-
             var app = builder.Build();
 
-            #region Configur Services
-            using var scope = app.Services.CreateScope();
-            var dbInitlizer = scope.ServiceProvider.GetRequiredService<IDbInitlizer>();
-            await dbInitlizer.Initialize();
+            // =========================
+            // DB INITIALIZER
+            // =========================
+            using (var scope = app.Services.CreateScope())
+            {
+                var dbInitlizer = scope.ServiceProvider.GetRequiredService<IDbInitlizer>();
+                await dbInitlizer.Initialize();
+            }
 
-
-            #endregion
-
-            // Configure the HTTP request pipeline.
+            // =========================
+            // HTTP PIPELINE
+            // =========================
             if (app.Environment.IsDevelopment())
             {
                 app.MapOpenApi();
             }
 
             app.UseHttpsRedirection();
+
+            // ? IMPORTANT: CORS must be here
+            app.UseCors("AllowAngularDev");
+
             app.UseAuthentication();
-
             app.UseAuthorization();
-
 
             app.MapControllers();
 
