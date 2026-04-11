@@ -18,6 +18,7 @@ namespace Hosptial.BLL.ViewModels.BookingViewModels
         [Required]
 
         public int PatientId { get; set; }
+        public decimal Amount { get; set; }
 
     }
 }

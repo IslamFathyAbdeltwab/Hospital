@@ -26,6 +26,8 @@ namespace Hospital
             builder.Services.AddControllers();
             builder.Services.AddOpenApi();
 
+            //stripe 
+            Stripe.StripeConfiguration.ApiKey =    builder.Configuration["Stripe:SecretKey"];
             // =========================
             // CORS CONFIGURATION (FIX)
             // =========================

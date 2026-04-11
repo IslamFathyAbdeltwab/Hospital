@@ -1,4 +1,5 @@
 ﻿using Hosptial.BLL.Services.Interfaces;
+using Hosptial.BLL.ViewModels;
 using Hosptial.BLL.ViewModels.BookingViewModels;
 using Hosptial.BLL.ViewModels.Common;
 using Hosptial.BLL.ViewModels.PatientViewModels;
@@ -9,7 +10,7 @@ namespace Hospital.Controllers
 {
     [ApiController]
     [Route("api/patient")]
-    public class PatientController(IPatientService patientService , IBookingService bookingService) : ControllerBase
+    public class PatientController(IPatientService patientService , IBookingService bookingService,IPaymentService paymentService) : ControllerBase
     {
 
         // login 
@@ -53,16 +54,16 @@ namespace Hospital.Controllers
         [HttpPost("Book")]
         public async Task<ActionResult> GreateBook(AddBookViewModel appointment)
         {
-            
             var booked = await bookingService.Add(appointment);
-            if (booked)
-            {
-                return Ok("Appointment booked successfully");
-            }
-            else
-            {
+
+            if (!booked)
                 return BadRequest("Failed to book appointment");
-            }
+
+            var url = await paymentService.CreateCheckout(
+                new PaymentDto { Amount = appointment.Amount }
+            );
+
+            return Ok(new { stripeUrl = url });
         }
        
 
