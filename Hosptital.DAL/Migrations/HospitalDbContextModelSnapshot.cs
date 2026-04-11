@@ -60,7 +60,7 @@ namespace Hosptital.DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Attachments");
+                    b.ToTable("Attachments", (string)null);
                 });
 
             modelBuilder.Entity("Hosptital.DAL.Entities.Base.ApplicationUser", b =>
@@ -173,7 +173,7 @@ namespace Hosptital.DAL.Migrations
 
                     b.HasIndex("PatientId");
 
-                    b.ToTable("Bookings");
+                    b.ToTable("Bookings", (string)null);
                 });
 
             modelBuilder.Entity("Hosptital.DAL.Entities.Doctor", b =>
@@ -214,7 +214,7 @@ namespace Hosptital.DAL.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("Doctors");
+                    b.ToTable("Doctors", (string)null);
                 });
 
             modelBuilder.Entity("Hosptital.DAL.Entities.DoctorAvailability", b =>
@@ -286,7 +286,7 @@ namespace Hosptital.DAL.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("Patients");
+                    b.ToTable("Patients", (string)null);
                 });
 
             modelBuilder.Entity("Hosptital.DAL.Entities.Prescription", b =>
@@ -319,7 +319,7 @@ namespace Hosptital.DAL.Migrations
 
                     b.HasIndex("PatientId");
 
-                    b.ToTable("Prescriptions");
+                    b.ToTable("Prescriptions", (string)null);
                 });
 
             modelBuilder.Entity("Hosptital.DAL.Entities.Speciality", b =>
@@ -352,7 +352,7 @@ namespace Hosptital.DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Specialities");
+                    b.ToTable("Specialities", (string)null);
                 });
 
             modelBuilder.Entity("Hosptital.DAL.Entities.Treatment", b =>
@@ -377,6 +377,9 @@ namespace Hosptital.DAL.Migrations
                     b.Property<int>("PrescriptionId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("PrescriptionId1")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
@@ -384,7 +387,9 @@ namespace Hosptital.DAL.Migrations
 
                     b.HasIndex("PrescriptionId");
 
-                    b.ToTable("Treatment");
+                    b.HasIndex("PrescriptionId1");
+
+                    b.ToTable("Treatment", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<int>", b =>
@@ -599,7 +604,7 @@ namespace Hosptital.DAL.Migrations
 
                             b1.HasKey("PatientId");
 
-                            b1.ToTable("Patients");
+                            b1.ToTable("Patients", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("PatientId");
@@ -637,6 +642,12 @@ namespace Hosptital.DAL.Migrations
                         .HasForeignKey("PrescriptionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("Hosptital.DAL.Entities.Prescription", "Prescription")
+                        .WithMany()
+                        .HasForeignKey("PrescriptionId1");
+
+                    b.Navigation("Prescription");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
