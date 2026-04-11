@@ -21,7 +21,7 @@ namespace Hospital
             var builder = WebApplication.CreateBuilder(args);
 
             // =========================
-            // Add Controllers + OpenAPI
+            // Add Controllers + OpenAPI .
             // =========================
             builder.Services.AddControllers();
             builder.Services.AddOpenApi();
