@@ -1,4 +1,5 @@
 ﻿using Hosptial.BLL.Profiles;
+using Hosptial.BLL.Profiles.Prescription;
 using Hosptial.BLL.Services.Classes;
 using Hosptial.BLL.Services.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
@@ -32,6 +33,7 @@ namespace Hosptial.BLL.Common
                 m.AddProfile(new PatientProfile());
                 m.AddProfile(new BookingProfile());
                 m.AddProfile(new DoctorAvailabilityProfile());
+                m.AddProfile(new prescriptionProfile());
 
 
 

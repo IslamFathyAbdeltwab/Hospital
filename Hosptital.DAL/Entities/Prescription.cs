@@ -21,7 +21,7 @@ namespace Hosptital.DAL.Entities
     public class Treatment:BaseEntity
     {
         public int PrescriptionId { get; set; }
-        //public Prescription Prescription { get; set; }
+        //public Prescription? Prescription { get; set; }
         public string MedicationName { get; set; }
         public string Notes { get; set; }
     }
