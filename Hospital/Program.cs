@@ -111,7 +111,7 @@ namespace Hospital
                 app.MapOpenApi();
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             // ? IMPORTANT: CORS must be here
             app.UseCors("AllowAngularDev");
