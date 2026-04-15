@@ -5,6 +5,7 @@ using Hosptial.BLL.ViewModels.BookingViewModels;
 using Hosptial.BLL.ViewModels.PatientViewModels;
 using Hosptital.DAL.Entities;
 using Hosptital.DAL.Repositroyes.Interfaces;
+using Microsoft.IdentityModel.Tokens.Experimental;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -136,6 +137,13 @@ namespace Hosptial.BLL.Services.Classes
             return result;
 
 
+        }
+
+        public async Task<List<Booking>> GetAllAppointmentForPatient(int patientId)
+        {
+            var spec = new PatientAppointmentSpecification(patientId);
+            var appointments = await _bookingRepo.GetAll(spec);
+            return appointments;
         }
     }
 }

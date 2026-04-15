@@ -1,4 +1,5 @@
 ﻿using Hosptial.BLL.ViewModels.BookingViewModels;
+using Hosptital.DAL.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,5 +15,6 @@ namespace Hosptial.BLL.Services.Interfaces
         public Task<GetBookViewModel> GetAll(int AvailabilityId);
         public Task<GetBookViewModel> GetById(int id);
         public Task<GetBookViewModel> GetBookedPatients(int availabilityId);
+        public Task<List<Booking>> GetAllAppointmentForPatient(int patientId);
     }
 }

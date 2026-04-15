@@ -65,11 +65,15 @@ namespace Hospital.Controllers
 
             return Ok(new { stripeUrl = url });
         }
-       
 
-      
 
-  
+        [HttpGet("Appointments/{patientId}")]
+        public async Task<ActionResult> GetAppointments(int patientId)
+        {
+            var appointments = await bookingService.GetAllAppointmentForPatient(patientId);
+            return Ok(appointments);
+        }
+
 
         // logout
 
