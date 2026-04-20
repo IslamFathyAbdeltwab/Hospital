@@ -19,6 +19,10 @@ namespace Hosptital.DAL.Repositroyes.Classes
         {
             Criteria = expression;
         }
+        protected BaseSpecification()
+        {
+            
+        }
         public void AddInclude(Expression<Func<TEntity, object>> includeExpression)
         {
             Includes.Add(includeExpression);

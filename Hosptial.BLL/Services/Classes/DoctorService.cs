@@ -82,6 +82,16 @@ namespace Hosptial.BLL.Services.Classes
                 : new List<DoctorsViewModel>();
         }
 
+        public async Task<List<DoctorsViewModel>> GetAll()
+        {
+            var spec = new DoctorGetAllSpecification();
+            var doctors = await _doctorRepo.GetAll(spec);
+
+            return doctors?.Any() == true
+                ? _mapper.Map<List<DoctorsViewModel>>(doctors)
+                : new List<DoctorsViewModel>();
+        }
+
         public async Task<bool> Update(UpdateDoctorViewModel model)
         {
             if (model == null || model.Id <= 0) return false;

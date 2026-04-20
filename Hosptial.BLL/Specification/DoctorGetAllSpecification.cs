@@ -16,5 +16,12 @@ namespace Hosptial.BLL.Specification
             AddInclude(d => d.Speciality);
             
         }
+
+        public DoctorGetAllSpecification() : base()
+        {
+            AddInclude(d => d.User);
+            AddInclude(d => d.Speciality);
+
+        }
     }
 }

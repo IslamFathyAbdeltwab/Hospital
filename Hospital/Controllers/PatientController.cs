@@ -10,7 +10,7 @@ namespace Hospital.Controllers
 {
     [ApiController]
     [Route("api/patient")]
-    public class PatientController(IPatientService patientService , IBookingService bookingService,IPaymentService paymentService) : ControllerBase
+    public class PatientController(IPatientService patientService ,IDoctorService doctorService ,IBookingService bookingService,IPaymentService paymentService) : ControllerBase
     {
 
         // login 
@@ -74,6 +74,42 @@ namespace Hospital.Controllers
             return Ok(appointments);
         }
 
+        // get all doctors 
+        [HttpGet("Doctors")]
+        public async Task<ActionResult> GetAllDoctors()
+        {
+            var doctors = await doctorService.GetAll();
+            if (doctors is null)
+            {
+                return NotFound("No doctors found");
+            }
+
+            return Ok(doctors);
+        }
+
+        // get doctor by speciality
+        [HttpGet("Doctors/{specialityId}")]
+        public async Task<ActionResult> GetDoctorsBySpeciality(int specialityId)
+        {
+            var doctors = await doctorService.GetAll(specialityId);
+            if (doctors is null || doctors.Count == 0)
+            {
+                return NotFound("No doctors found for the specified speciality");
+            }
+            return Ok(doctors);
+        }
+
+        // get doctor by id
+        [HttpGet("Doctor/{doctorId}")]
+        public async Task<ActionResult> GetDoctorById(int doctorId)
+        {
+            var doctor = await doctorService.Get(doctorId);
+            if (doctor is null)
+            {
+                return NotFound("Doctor not found");
+            }
+            return Ok(doctor);
+        }
 
         // logout
 
