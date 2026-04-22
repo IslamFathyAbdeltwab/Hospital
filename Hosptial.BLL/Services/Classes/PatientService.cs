@@ -180,5 +180,16 @@ namespace Hosptial.BLL.Services.Classes
 
             return new System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler().WriteToken(token);
         }
+
+        public async Task<PatientViewModel?> GetByUserId(int userId)
+        {
+            if (userId <= 0) return null;
+
+            var spec = new GetPatientByUserIdSpecification(userId);
+            var patient = await _patientRepo.Get(spec);
+            if (patient == null) return null;
+
+            return _mapper.Map<PatientViewModel>(patient);
+        }
     }
 }

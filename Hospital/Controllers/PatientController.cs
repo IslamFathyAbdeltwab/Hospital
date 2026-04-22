@@ -13,6 +13,17 @@ namespace Hospital.Controllers
     public class PatientController(IPatientService patientService ,IDoctorService doctorService ,IBookingService bookingService,IPaymentService paymentService) : ControllerBase
     {
 
+        // get patient by userID
+        [HttpGet("{userId}")]
+        public async Task<ActionResult> GetPatientByUserId(int userId)
+        {
+            var patient = await patientService.GetByUserId(userId);
+            if (patient is null)
+            {
+                return NotFound("Patient not found");
+            }
+            return Ok(patient);
+        }
         // login 
         [HttpPost("Login")]
         public async Task<ActionResult> Login(LoginViewModel loginView)

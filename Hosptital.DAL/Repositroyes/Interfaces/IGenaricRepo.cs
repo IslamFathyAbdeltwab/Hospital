@@ -10,9 +10,9 @@ namespace Hosptital.DAL.Repositroyes.Interfaces
     public interface IGenaricRepo<TEntity>where TEntity : BaseEntity
     {
         Task<TEntity> Get(int id);
-        Task<TEntity> Get(IBaseSpecification<TEntity> baseSpecification);
+        Task<TEntity> Get(BaseSpecification<TEntity> baseSpecification);
 
-        Task<List<TEntity?>> GetAll(IBaseSpecification<TEntity> baseSpecification);
+        Task<List<TEntity?>> GetAll(BaseSpecification<TEntity> baseSpecification);
         Task<List<TEntity?>> GetAll(Func<TEntity, bool> ?Condition = null);
 
         void Add(TEntity e);

@@ -15,6 +15,8 @@ namespace Hosptial.BLL.Services.Interfaces
        public Task<bool> Update(UpdatePatientViewModel patient);
        public Task<bool> Delete(int id);
 
+        public Task<PatientViewModel?> GetByUserId(int userId);
+
         Task<ValidUserViewModel?> Register(RegisterPatientViewModel model);
         Task<ValidUserViewModel?> Login(LoginViewModel model);
 

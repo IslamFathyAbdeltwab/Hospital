@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Hosptital.DAL.Repositroyes.Interfaces
 {
-    public interface IBaseSpecification <TEntity> where TEntity : BaseEntity
+    public interface BaseSpecification <TEntity> where TEntity : BaseEntity
     {
         public Expression<Func<TEntity, bool>>? Criteria { get; }
 

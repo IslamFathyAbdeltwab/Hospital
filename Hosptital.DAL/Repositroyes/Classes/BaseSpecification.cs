@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Hosptital.DAL.Repositroyes.Classes
 {
-    public abstract class BaseSpecification<TEntity> : IBaseSpecification<TEntity> where TEntity : BaseEntity
+    public abstract class BaseSpecification<TEntity> : Interfaces.BaseSpecification<TEntity> where TEntity : BaseEntity
     {
         public Expression<Func<TEntity, bool>>? Criteria { get; }
 

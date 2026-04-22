@@ -11,7 +11,7 @@ namespace Hosptital.DAL.Repositroyes.Classes
 {
     public static class QueryEvlouter
     {
-        public static IQueryable<TEntity> ApplySpecification<TEntity>(IQueryable<TEntity> query, IBaseSpecification<TEntity> specification) where TEntity : BaseEntity
+        public static IQueryable<TEntity> ApplySpecification<TEntity>(IQueryable<TEntity> query, Interfaces.BaseSpecification<TEntity> specification) where TEntity : BaseEntity
         {
             var Entrypoint = query;
             if (specification.Criteria != null)
