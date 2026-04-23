@@ -26,7 +26,7 @@ namespace Hosptial.BLL.Services.Classes
             if(doctorAvailability is  null)
                 return false;
             var bookingPatients =await bookingService.GetAll(Id);
-            if(bookingPatients.patients is not null && (bookingPatients.patients.Any()&& bookingPatients.End >DateTime.Now))
+            if(bookingPatients is not null &&  bookingPatients.patients is not null && (bookingPatients.patients.Any()&& bookingPatients.End >DateTime.Now))
             {
                 return false;
                 //if doctor need to cancel must refund to the patients money for reservation 
@@ -58,7 +58,7 @@ namespace Hosptial.BLL.Services.Classes
         {
 
             var booking = await bookingService.GetAll(Update.DoctorAvailabilityId);
-            if (booking.patients is null || booking.patients.Count != 0) return false;
+            if (booking is not null ) return false;
             var docotravailability = mapper.Map<UpdateDoctorAvailabilityViewModel, DoctorAvailability>(Update);
             uniteOfWork.GetGenaricRepo<DoctorAvailability>().Update(docotravailability);
             return await uniteOfWork.SaveChangesAsync()>0;
