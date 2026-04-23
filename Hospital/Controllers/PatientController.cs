@@ -131,6 +131,18 @@ namespace Hospital.Controllers
         //}
 
 
+        // updata profiel
+        [HttpPut("UpdateProfile/{patientId}")]
+        public async Task<ActionResult> UpdateProfile(int patientId, UpdatePatientViewModel updateView)
+        {
+            var updated = await patientService.Update(patientId, updateView);
+            if (updated is null)
+            {
+                return NotFound("Patient not found");
+            }
+            return Ok(updated);
+        }
+
 
         //
     }
