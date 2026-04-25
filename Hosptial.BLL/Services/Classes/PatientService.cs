@@ -107,11 +107,11 @@ namespace Hosptial.BLL.Services.Classes
         }
 
         // ================= UPDATE =================
-        public async Task<bool> Update(UpdatePatientViewModel model)
+        public async Task<bool> Update(int patientId, UpdatePatientViewModel model)
         {
-            if (model == null || model.Id <= 0) return false;
+            if (model == null || patientId <= 0) return false;
 
-            var patient = await _patientRepo.Get(model.Id);
+            var patient = await _patientRepo.Get(patientId);
             if (patient == null) return false;
 
             patient.User.UserName = model.Name;
@@ -180,5 +180,18 @@ namespace Hosptial.BLL.Services.Classes
 
             return new System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler().WriteToken(token);
         }
+
+        public async Task<PatientViewModel?> GetByUserId(int userId)
+        {
+            if (userId <= 0) return null;
+
+            var spec = new GetPatientByUserIdSpecification(userId);
+            var patient = await _patientRepo.Get(spec);
+            if (patient == null) return null;
+
+            return _mapper.Map<PatientViewModel>(patient);
+        }
+
+        // logout is handled on client side by deleting the token, so no server-side method is needed for that.
     }
 }

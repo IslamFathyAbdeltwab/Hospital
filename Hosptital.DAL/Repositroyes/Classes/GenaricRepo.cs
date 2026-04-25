@@ -27,7 +27,7 @@ namespace Hosptital.DAL.Repositroyes.Classes
             return await hospitalDbContext.Set<TEntity>().FindAsync(id);
         }
 
-        public async Task<TEntity?> Get(IBaseSpecification<TEntity> baseSpecification)
+        public async Task<TEntity?> Get(Interfaces.BaseSpecification<TEntity> baseSpecification)
         {
             return await QueryEvlouter.ApplySpecification(hospitalDbContext.Set<TEntity>(), baseSpecification).FirstOrDefaultAsync();
         }
@@ -41,7 +41,7 @@ namespace Hosptital.DAL.Repositroyes.Classes
             return hospitalDbContext.Set<TEntity>().Where(Condition).ToList();
         }
 
-        public async Task<List<TEntity?>> GetAll(IBaseSpecification<TEntity> baseSpecification)
+        public async Task<List<TEntity?>> GetAll(Interfaces.BaseSpecification<TEntity> baseSpecification)
         {
             return await QueryEvlouter.ApplySpecification(hospitalDbContext.Set<TEntity>(), baseSpecification).ToListAsync();
         }
