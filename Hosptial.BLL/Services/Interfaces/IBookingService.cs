@@ -14,7 +14,7 @@ namespace Hosptial.BLL.Services.Interfaces
         public Task<bool> Delete(int id);
         public Task<GetBookViewModel> GetAll(int AvailabilityId);
         public Task<GetBookViewModel> GetById(int id);
-        public Task<GetBookViewModel> GetBookedPatients(int availabilityId);
+        public Task<List<Booking>> GetBookedPatients(int availabilityId);
         public Task<List<Booking>> GetAllAppointmentForPatient(int patientId);
     }
 }

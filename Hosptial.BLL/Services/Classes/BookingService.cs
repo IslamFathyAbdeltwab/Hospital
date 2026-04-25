@@ -117,7 +117,7 @@ namespace Hosptial.BLL.Services.Classes
             return _mapper.Map<GetBookViewModel>(booking);
         }
 
-        public async Task<GetBookViewModel> GetBookedPatients(int availabilityId)
+        public async Task<List<Booking>> GetBookedPatients(int availabilityId)
         {
             var spec = new BookingSpecification(availabilityId);
             var patients = await _bookingRepo.GetAll(spec);
@@ -134,7 +134,7 @@ namespace Hosptial.BLL.Services.Classes
         patients.Select(b => b.Patient).ToList()
     )
             };
-            return result;
+            return patients;
 
 
         }

@@ -29,7 +29,9 @@ namespace Hosptial.BLL.Services.Classes
             {
                 DoctorId = prescription.DoctorId,
                 PatientId = prescription.PatientId,
-                Treatments = prescription.Treatments
+                Treatments = prescription.Treatments,
+                Diagnosis = prescription.Diagnosis
+
 
             });
             return await uniteOfWork.SaveChangesAsync() > 0;

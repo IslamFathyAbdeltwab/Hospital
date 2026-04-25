@@ -11,6 +11,7 @@ namespace Hosptial.BLL.ViewModels.PrescriptionViewModels
     {
         public int DoctorId { get; set; }
         public int PatientId { get; set; }
+        public string Diagnosis { get; set; }
         public ICollection<Treatment> Treatments { get; set; } = new List<Treatment>(); 
     }
 }

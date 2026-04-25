@@ -2,6 +2,7 @@
 using Hosptial.BLL.ViewModels.Common;
 using Hosptial.BLL.ViewModels.DoctorViewModels;
 using Hosptial.BLL.ViewModels.PatientViewModels;
+using Hosptital.DAL.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +22,7 @@ namespace Hosptial.BLL.Services.Interfaces
 
         Task<ValidUserViewModel?> Register(RegisterDoctorViewModel model);
         Task<ValidUserViewModel?> Login(LoginViewModel model);
-        public  Task<GetBookViewModel> GetBookingPatient(int avlId);
+        public  Task<List<Booking>> GetBookingPatient(int avlId);
 
 
         // create prescription for patient

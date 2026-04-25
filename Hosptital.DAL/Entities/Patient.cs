@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Hosptital.DAL.Entities
@@ -13,7 +14,7 @@ namespace Hosptital.DAL.Entities
         public Address Address { get; set; }
         public ApplicationUser User { get; set; }
         public int UserId { get; set; }
-
+        [JsonIgnore]
         public ICollection<Booking> Booking { get; set; }
         
 

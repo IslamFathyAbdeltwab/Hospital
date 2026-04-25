@@ -199,7 +199,7 @@ namespace Hosptial.BLL.Services.Classes
 
         #endregion
 
-        public async Task<GetBookViewModel> GetBookingPatient(int avlId)
+        public async Task<List<Booking>> GetBookingPatient(int avlId)
         {
             if (avlId <= 0) return null;
             return await _bookingService.GetBookedPatients(avlId);
