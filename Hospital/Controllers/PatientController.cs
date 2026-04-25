@@ -136,7 +136,7 @@ namespace Hospital.Controllers
         public async Task<ActionResult> UpdateProfile(int patientId, UpdatePatientViewModel updateView)
         {
             var updated = await patientService.Update(patientId, updateView);
-            if (updated is null)
+            if (updated)
             {
                 return NotFound("Patient not found");
             }

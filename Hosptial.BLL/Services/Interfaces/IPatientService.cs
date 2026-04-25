@@ -12,7 +12,7 @@ namespace Hosptial.BLL.Services.Interfaces
     {
        public Task<PatientViewModel?> Get(int id);
        //public Task<bool> Add(AddPatientViewModel patient);
-       public Task<bool> Update(UpdatePatientViewModel patient);
+       public Task<bool> Update(int patientId, UpdatePatientViewModel patient);
        public Task<bool> Delete(int id);
 
         public Task<PatientViewModel?> GetByUserId(int userId);
