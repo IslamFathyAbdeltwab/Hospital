@@ -110,8 +110,9 @@ namespace Hosptial.BLL.Services.Classes
         public async Task<bool> Update(int patientId, UpdatePatientViewModel model)
         {
             if (model == null || patientId <= 0) return false;
+            var spec = new PatientSpecification(patientId);
 
-            var patient = await _patientRepo.Get(patientId);
+            var patient = await _patientRepo.Get(spec);
             if (patient == null) return false;
 
             patient.User.UserName = model.Name;
