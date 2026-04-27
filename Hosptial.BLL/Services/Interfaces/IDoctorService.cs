@@ -23,7 +23,7 @@ namespace Hosptial.BLL.Services.Interfaces
         Task<ValidUserViewModel?> Register(RegisterDoctorViewModel model);
         Task<ValidUserViewModel?> Login(LoginViewModel model);
         public  Task<List<Booking>> GetBookingPatient(int avlId);
-
+        public Task<List<Prescription>> GetDoctorPatients(int doctorId);
 
         // create prescription for patient
 

@@ -3,6 +3,7 @@ using Hosptial.BLL.Services.Interfaces;
 using Hosptial.BLL.Specification;
 using Hosptial.BLL.ViewModels.BookingViewModels;
 using Hosptial.BLL.ViewModels.Common;
+
 using Hosptial.BLL.ViewModels.DoctorViewModels;
 using Hosptial.BLL.ViewModels.PatientViewModels;
 using Hosptital.DAL.Entities;
@@ -203,6 +204,14 @@ namespace Hosptial.BLL.Services.Classes
         {
             if (avlId <= 0) return null;
             return await _bookingService.GetBookedPatients(avlId);
+        }
+        public async Task<List<Prescription>> GetDoctorPatients(int doctorId)
+        {
+            if (doctorId <= 0) return null;
+            var spec = new DoctorPatientSpecification(doctorId);
+            var prescriptions = await _unitOfWork.GetGenaricRepo<Prescription>().GetAll(spec);
+
+            return prescriptions;
         }
     }
 }

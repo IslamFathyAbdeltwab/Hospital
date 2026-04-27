@@ -142,10 +142,12 @@ namespace Hospital.Controllers
             return Ok(pres);
 
         }
-
-
-
-
+        [HttpGet("DoctorPatients/{doctorId}")]
+        public async Task<ActionResult> GetDoctorPatientsAndHisPrescriptions(int doctorId)
+        {
+            var patientsWithPrescriptions = await doctorService.GetDoctorPatients(doctorId);
+            return Ok(patientsWithPrescriptions);
+        }
 
     }
 }
