@@ -4,6 +4,7 @@ using Hosptital.DAL.Data.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Hosptital.DAL.Migrations
 {
     [DbContext(typeof(HospitalDbContext))]
-    partial class HospitalDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260428132957_admin")]
+    partial class admin
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -201,7 +204,8 @@ namespace Hosptital.DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DoctorAvailabilityId");
+                    b.HasIndex("DoctorAvailabilityId")
+                        .IsUnique();
 
                     b.HasIndex("PatientId");
 
@@ -573,8 +577,8 @@ namespace Hosptital.DAL.Migrations
             modelBuilder.Entity("Hosptital.DAL.Entities.Booking", b =>
                 {
                     b.HasOne("Hosptital.DAL.Entities.DoctorAvailability", "DoctorAvailability")
-                        .WithMany()
-                        .HasForeignKey("DoctorAvailabilityId")
+                        .WithOne()
+                        .HasForeignKey("Hosptital.DAL.Entities.Booking", "DoctorAvailabilityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

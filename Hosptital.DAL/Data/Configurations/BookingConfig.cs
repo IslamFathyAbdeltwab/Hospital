@@ -19,10 +19,13 @@ namespace Hosptital.DAL.Data.Configurations
                    .WithOne()
                    .HasForeignKey<Booking>(x => x.PatientId)
                    .OnDelete(Microsoft.EntityFrameworkCore.DeleteBehavior.Cascade);
-            builder.HasOne(b=>b.DoctorAvailability)
-                   .WithOne()
-                   .HasForeignKey<Booking>(b=>b.DoctorAvailabilityId)
-                   .OnDelete(Microsoft.EntityFrameworkCore.DeleteBehavior.Cascade);
+            //builder.HasOne(b=>b.DoctorAvailability)
+            //       .WithOne()
+            //       .HasForeignKey<Booking>(b=>b.DoctorAvailabilityId)
+            //       .OnDelete(Microsoft.EntityFrameworkCore.DeleteBehavior.Cascade);
+            builder.HasOne(b => b.DoctorAvailability)
+       .WithMany()
+       .HasForeignKey(b => b.DoctorAvailabilityId);
 
             //builder.HasIndex(b => b.DoctorAvailabilityId);
 

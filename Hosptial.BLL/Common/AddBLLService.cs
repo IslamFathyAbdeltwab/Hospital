@@ -23,6 +23,8 @@ namespace Hosptial.BLL.Common
             services.AddScoped<IPrescriptionService, PreScriptionService>();
             services.AddScoped<IAttachmentService, AttachmentService>();
             services.AddScoped<IPaymentService, PaymentService>();
+            services.AddScoped<IAdminService, AdminService>();
+
 
 
 

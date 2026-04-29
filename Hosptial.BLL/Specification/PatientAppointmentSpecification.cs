@@ -13,8 +13,8 @@ namespace Hosptial.BLL.Specification
         public PatientAppointmentSpecification(int patientId) : base(b => b.PatientId == patientId)
         {
             AddInclude(b => b.DoctorAvailability);
-            //AddInclude(b => b.DoctorAvailability.Doctor);
-            //AddInclude(b => b.DoctorAvailability.Doctor.User);
+            AddInclude(b => b.Patient);
+            //AddInclude(b => b.Doct);
         }
     }
 }

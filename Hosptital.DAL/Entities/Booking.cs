@@ -24,8 +24,9 @@ namespace Hosptital.DAL.Entities
     }
     public enum AppointmentStatus
     {
-        Pending,
-        Cancelled,
-        Completed
+        Pending = 0,
+        Confirmed = 1,
+        Completed = 2,
+        Cancelled = 3
     }
 }

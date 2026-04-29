@@ -17,5 +17,6 @@ namespace Hosptial.BLL.ViewModels.DoctorViewModels
         public int YearsOfExperience { get; set; }
         public string Bio { get; set; }
         public string Phone { get; set; }
+        public bool IsApproed { get; set; }
     }
 }

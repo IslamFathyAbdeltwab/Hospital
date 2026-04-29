@@ -16,5 +16,12 @@ namespace Hosptial.BLL.Specification
             AddInclude(b => b.Patient);
             AddInclude(b => b.Patient.User);
         }
+
+        public BookingSpecification(Expression<Func<Booking, bool>> criteria) : base(criteria)
+        {
+            AddInclude(b => b.Patient);
+            AddInclude(b => b.Patient.User);
+            AddInclude(b => b.DoctorAvailability);
+        }
     }
 }

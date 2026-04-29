@@ -10,8 +10,8 @@ namespace Hosptial.BLL.ViewModels.BookingViewModels
 {
     public class AddBookViewModel
     {
-        [Required]
-        public AppointmentStatus Status { get; set; }
+        //[Required]
+        //public AppointmentStatus Status { get; set; }
         [Required]
 
         public int DoctorAvailabilityId { get; set; }

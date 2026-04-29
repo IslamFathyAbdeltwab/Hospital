@@ -3,6 +3,7 @@ using Hosptital.DAL.Repositroyes.Classes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -15,6 +16,11 @@ namespace Hosptial.BLL.Specification
             AddInclude(d => d.User);
             AddInclude(d => d.Speciality);
             
+        }
+        public DoctorGetAllSpecification(Expression<Func<Doctor, bool>> criteria) : base(criteria)
+        {
+            AddInclude(d => d.User);
+            AddInclude(d => d.Speciality);
         }
 
         public DoctorGetAllSpecification() : base()

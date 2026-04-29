@@ -17,6 +17,8 @@ namespace Hosptital.DAL.Entities
 
         public int UserId { get; set; }
 
+        public bool IsApproved { get; set; } = false; // for admin approval
+
         public ICollection<DoctorAvailability> DoctorAvailabilities { get; set; }
        
 
