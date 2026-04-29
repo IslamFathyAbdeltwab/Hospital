@@ -3,7 +3,9 @@ using Hosptial.BLL.ViewModels;
 using Hosptial.BLL.ViewModels.BookingViewModels;
 using Hosptial.BLL.ViewModels.Common;
 using Hosptial.BLL.ViewModels.PatientViewModels;
+using Hosptital.DAL.Entities;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 
 namespace Hospital.Controllers
@@ -62,25 +64,60 @@ namespace Hospital.Controllers
 
         }
         // book availaib
+        //[HttpPost("Book")]
+        //public async Task<ActionResult> GreateBook(AddBookViewModel appointment)
+        //{
+        //    var booked = await bookingService.Add(appointment);
+
+        //    if (!booked)
+        //        return BadRequest("Failed to book appointment");
+
+        //    var url = await paymentService.CreateCheckout(
+        //        new PaymentDto { Amount = appointment.Amount }
+        //    );
+
+        //    return Ok(new { stripeUrl = url });
+        //}
+
         [HttpPost("Book")]
-        public async Task<ActionResult> GreateBook(AddBookViewModel appointment)
+        public async Task<ActionResult> CreateBook(AddBookViewModel appointment)
         {
-            var booked = await bookingService.Add(appointment);
+            // ✅ Create booking — get back the new id
+            var bookingId = await bookingService.Add(appointment);
 
-            if (!booked)
-                return BadRequest("Failed to book appointment");
+            if (bookingId == 0)
+                return BadRequest("Failed to book appointment.");
 
-            var url = await paymentService.CreateCheckout(
-                new PaymentDto { Amount = appointment.Amount }
-            );
+            // ✅ Pass booking id + amount to Stripe
+            var url = await paymentService.CreateCheckout(new PaymentDto
+            {
+                Amount = (long)(appointment.Amount * 100),  // Stripe needs cents
+                BookingId = bookingId
+            });
 
             return Ok(new { stripeUrl = url });
+        }
+
+
+        [HttpPost("confirm")]
+        public async Task<ActionResult> ConfirmBooking([FromQuery] string sessionId)
+        {
+            if (string.IsNullOrEmpty(sessionId))
+                return BadRequest("Session ID is required.");
+
+            var result = await bookingService.ConfirmBooking(sessionId);
+
+            if (!result)
+                return BadRequest("Could not confirm payment.");
+
+            return Ok(new { message = "Appointment confirmed successfully." });
         }
 
 
         [HttpGet("Appointments/{patientId}")]
         public async Task<ActionResult> GetAppointments(int patientId)
         {
+            await bookingService.AutoCompleteExpiredBookings(patientId);
             var appointments = await bookingService.GetAllAppointmentForPatient(patientId);
             return Ok(appointments);
         }
@@ -143,6 +180,29 @@ namespace Hospital.Controllers
             return Ok(updated);
         }
 
+        //[HttpPost("confirm")]
+        //public async Task<IActionResult> ConfirmBooking([FromQuery] string sessionId)
+        //{
+        //    // 1. Ask Stripe if this session was paid
+        //    var service = new SessionService();
+        //    var session = await service.GetAsync(sessionId);
+
+        //    if (session.PaymentStatus != "paid")
+        //        return BadRequest("Payment not completed.");
+
+        //    // 2. Find the booking by the session metadata you stored at creation
+        //    // (store appointmentId in Stripe metadata when creating the session)
+        //    var appointmentId = int.Parse(session.Metadata["appointmentId"]);
+        //    var appointment = await _context.Appointments.FindAsync(appointmentId);
+
+        //    if (appointment == null) return NotFound();
+
+        //    // 3. Update status
+        //    appointment.Status = AppointmentStatus.Confirmed;
+        //    await _context.SaveChangesAsync();
+
+        //    return Ok(appointment);
+        //}
 
         //
     }

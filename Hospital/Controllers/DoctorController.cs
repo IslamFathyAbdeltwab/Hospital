@@ -42,7 +42,7 @@ namespace Hospital.Controllers
             }
             else
             {
-                return Unauthorized("Invalid email or password");
+                return Unauthorized("Invalid email or password or may be not approved");
             }
         }
 
