@@ -114,20 +114,20 @@ namespace Hosptial.BLL.Services.Classes
         public async Task<ValidUserViewModel?> Login(LoginViewModel model)
         {
             if (model == null) return null;
-            
+         
 
             var user = await _userManager.FindByEmailAsync(model.Email);
             if (user == null) return null;
 
             var spec = new DoctorSpecification(d => d.UserId == user.Id);
-           var doc = await _unitOfWork.GetGenaricRepo<Doctor>().Get(spec);
+            var doc = await _unitOfWork.GetGenaricRepo<Doctor>().Get(spec);
             if (doc == null) return null;
             if (!doc.IsApproved) return null;
 
             var passwordValid = await _userManager.CheckPasswordAsync(user, model.Password);
             if (!passwordValid) return null;
 
-            return await BuildValidUserViewModel(user);
+            return await BuildValidUserViewModel(user,doc.Id);
         }
 
         public async Task<ValidUserViewModel?> Register(RegisterDoctorViewModel model)
@@ -155,7 +155,7 @@ namespace Hosptial.BLL.Services.Classes
             _doctorRepo.Add(doctor);
             _unitOfWork.SaveChanges();
 
-            return await BuildValidUserViewModel(user);
+            return await BuildValidUserViewModel(user,doctor.Id);
         }
 
         private async Task<bool> EnsureRoleAndAssign(ApplicationUser user, string role)
@@ -167,10 +167,10 @@ namespace Hosptial.BLL.Services.Classes
             return result.Succeeded;
         }
 
-        private async Task<ValidUserViewModel> BuildValidUserViewModel(ApplicationUser user)
+        private async Task<ValidUserViewModel> BuildValidUserViewModel(ApplicationUser user ,int DoctorId)
         {
             var roles = await _userManager.GetRolesAsync(user);
-            var token = await GenerateJwtToken(user, roles);
+            var token = await GenerateJwtToken(user, roles,DoctorId);
 
             return new ValidUserViewModel
             {
@@ -180,13 +180,14 @@ namespace Hosptial.BLL.Services.Classes
             };
         }
 
-        private async Task<string> GenerateJwtToken(ApplicationUser user, IList<string> roles)
+        private async Task<string> GenerateJwtToken(ApplicationUser user, IList<string> roles,int doctorId)
         {
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new Claim(ClaimTypes.Name, user.UserName),
-                new Claim(ClaimTypes.Email, user.Email)
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim("DoctorId",doctorId.ToString())
             };
 
             foreach (var role in roles)
@@ -212,5 +213,6 @@ namespace Hosptial.BLL.Services.Classes
             if (avlId <= 0) return null;
             return await _bookingService.GetBookedPatients(avlId);
         }
+        
     }
 }

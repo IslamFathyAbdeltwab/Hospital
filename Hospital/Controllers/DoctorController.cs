@@ -1,4 +1,5 @@
-﻿using Hosptial.BLL.Services.Interfaces;
+﻿using Hosptial.BLL.Services.Classes;
+using Hosptial.BLL.Services.Interfaces;
 using Hosptial.BLL.ViewModels.Common;
 using Hosptial.BLL.ViewModels.DoctorAvailabilityViewModels;
 using Hosptial.BLL.ViewModels.DoctorViewModels;
@@ -120,7 +121,7 @@ namespace Hospital.Controllers
         {
             var created = await prescriptionService.Add(addPrescription);
             if (created)
-                return Ok("Created Successfuly");
+                return Ok(new { message = "Created Successfully" });
             else
                 return BadRequest();
         }
@@ -143,7 +144,13 @@ namespace Hospital.Controllers
 
         }
 
+        [HttpGet("DoctorPatients/{doctorId}")]
+        public async Task<ActionResult> GetDoctorPrescriptions(int doctorId)
+        {
+            var result = await prescriptionService.GetDoctorPationtsWithPrescriptions(doctorId);
 
+            return Ok(result);
+        }
 
 
 

@@ -53,10 +53,15 @@ namespace Hosptial.BLL.Services.Classes
 
             return mapper.Map<List<PrescriptionViewModel>>(prescriptions);
 
-
-
-
         }
-   
+        public async Task<List<Prescription>> GetDoctorPationtsWithPrescriptions(int doctorId)
+        {
+            var spec = new DoctorPrescriptionSpecification(doctorId);
+
+            var prescriptions = await uniteOfWork.GetGenaricRepo<Prescription>().GetAll(spec);
+
+            return prescriptions;
+        }
+
     }
 }
