@@ -24,7 +24,17 @@ namespace Hosptital.DAL.Repositroyes.Classes
                 {
                     Entrypoint = specification.Includes.Aggregate(Entrypoint, (current, include) => current.Include(include));
                 }
+
             }
+            if (specification.OrderBy is not null)
+            {
+                Entrypoint = specification.OrderBy.Aggregate(Entrypoint, (current, orderBy) => current.OrderBy(orderBy));
+            }
+            if (specification.OrderByDescending is not null)
+            {
+                Entrypoint = specification.OrderByDescending.Aggregate(Entrypoint, (current, orderByDescending) => current.OrderByDescending(orderByDescending));
+            }
+
             return Entrypoint;
         }
     }

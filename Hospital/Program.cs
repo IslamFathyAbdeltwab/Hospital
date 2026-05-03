@@ -1,5 +1,8 @@
 using Hosptial.BLL.Common;
 using Hosptial.BLL.Profiles;
+using Hosptial.BLL.Services;
+using Hosptial.BLL.Services.Classes;
+using Hosptial.BLL.Services.Interfaces;
 using Hosptital.DAL.Common;
 using Hosptital.DAL.Data.Contexts;
 using Hosptital.DAL.Entities.Base;
@@ -41,6 +44,7 @@ namespace Hospital
                         .AllowAnyMethod();
                 });
             });
+            
 
             // =========================
             // JWT AUTHENTICATION
@@ -86,6 +90,7 @@ namespace Hospital
                 .AddEntityFrameworkStores<HospitalDbContext>()
                 .AddDefaultTokenProviders();
 
+            builder.Services.AddSignalR();
             // =========================
             // DAL + BLL SERVICES
             // =========================
@@ -110,6 +115,11 @@ namespace Hospital
             {
                 app.MapOpenApi();
             }
+            // Services
+            
+
+            // After app.Build()
+            app.MapHub<ChatHub>("/hubs/chat");
 
             //app.UseHttpsRedirection();
 

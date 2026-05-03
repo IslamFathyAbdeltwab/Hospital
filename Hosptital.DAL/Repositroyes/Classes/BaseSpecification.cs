@@ -15,6 +15,10 @@ namespace Hosptital.DAL.Repositroyes.Classes
 
         public List<Expression<Func<TEntity, object>>> Includes { get; private set; } = [];
 
+        public List<Expression<Func<TEntity, object>>> OrderBy { get; private set; } = [];
+
+        public List<Expression<Func<TEntity, object>>> OrderByDescending { get; private set; } = [];
+
         public BaseSpecification(Expression<Func<TEntity, bool>> expression)
         {
             Criteria = expression;
@@ -23,9 +27,21 @@ namespace Hosptital.DAL.Repositroyes.Classes
         {
             
         }
+
+        public void AddOrderByDescending(Expression<Func<TEntity, object>> orderByDescendingExpression)
+        {
+            OrderByDescending.Add(orderByDescendingExpression);
+        }
+
+        public void AddOrderBy(Expression<Func<TEntity, object>> orderByExpression)
+        {
+            OrderBy.Add(orderByExpression);
+        }
+
         public void AddInclude(Expression<Func<TEntity, object>> includeExpression)
         {
             Includes.Add(includeExpression);
         }
+
     }
 }
