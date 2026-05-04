@@ -13,5 +13,12 @@ namespace Hosptital.DAL.Repositroyes.Interfaces
         public Expression<Func<TEntity, bool>>? Criteria { get; }
 
         public List<Expression<Func<TEntity, object>>> Includes { get; }
+
+        public List<Expression<Func<TEntity, object>>> OrderBy { get; }
+
+        public List<Expression<Func<TEntity, object>>> OrderByDescending { get; }
+
+
+
     }
 }

@@ -24,6 +24,8 @@ namespace Hosptial.BLL.Common
             services.AddScoped<IAttachmentService, AttachmentService>();
             services.AddScoped<IPaymentService, PaymentService>();
             services.AddScoped<IAdminService, AdminService>();
+           services.AddScoped<IChatService, ChatService>();
+
 
 
 

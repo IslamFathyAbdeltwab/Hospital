@@ -32,6 +32,8 @@ namespace Hosptital.DAL.Repositroyes.Classes
             return await QueryEvlouter.ApplySpecification(hospitalDbContext.Set<TEntity>(), baseSpecification).FirstOrDefaultAsync();
         }
 
+       
+
         public async Task<List<TEntity?>> GetAll(Func<TEntity, bool>? Condition = null)
         {
             if (Condition is null)

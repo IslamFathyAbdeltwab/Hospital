@@ -30,7 +30,7 @@ namespace Hospital.Controllers
         // add new admin
         [HttpPost]
         [Route("addAdmin")]
-        public async Task<IActionResult> AddAdmin([FromBody] AddAdminViewModel admin)
+        public async Task<IActionResult> AddAdmin( AddAdminViewModel admin)
         {
             var isAdded = await adminService.AddAdminAsync(admin);
             return isAdded ? Ok("Admin added successfully") : BadRequest("Failed to add admin");
@@ -39,7 +39,7 @@ namespace Hospital.Controllers
         // update admin
         [HttpPut]
         [Route("updateAdmin/{id}")]
-        public async Task<IActionResult> UpdateAdmin(int id, [FromBody] AddAdminViewModel admin)
+        public async Task<IActionResult> UpdateAdmin(int id,  AddAdminViewModel admin)
         {
             var isUpdated = await adminService.UpdateAdminAsync(id, admin);
             return isUpdated ? Ok("Admin updated successfully") : BadRequest("Failed to update admin");

@@ -121,13 +121,13 @@ namespace Hosptial.BLL.Services.Classes
         public async Task<ValidUserViewModel?> Login(LoginViewModel model)
         {
             if (model == null) return null;
-         
+            
 
             var user = await _userManager.FindByEmailAsync(model.Email);
             if (user == null) return null;
 
             var spec = new DoctorSpecification(d => d.UserId == user.Id);
-            var doc = await _unitOfWork.GetGenaricRepo<Doctor>().Get(spec);
+           var doc = await _unitOfWork.GetGenaricRepo<Doctor>().Get(spec);
             if (doc == null) return null;
             if (!doc.IsApproved) return null;
 
