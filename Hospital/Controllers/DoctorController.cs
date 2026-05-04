@@ -22,6 +22,12 @@ namespace Hospital.Controllers
             var doctor = await doctorService.Get(doctorId);
             return Ok(doctor);
         }
+        [HttpGet("{doctorId}")]
+        public async Task<IActionResult> GetDashboard(int doctorId)
+        {
+            var result = await doctorService.GetDoctorDashboardAsync(doctorId);
+            return Ok(result);
+        }
 
         // Update profile
         [HttpPut("Profile")] // update doctor profile
