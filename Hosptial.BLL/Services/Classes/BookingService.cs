@@ -23,17 +23,20 @@ namespace Hosptial.BLL.Services.Classes
 
         private readonly IUniteOfWork _unitOfWork;
         private readonly IGenaricRepo<DoctorAvailability> availabilityRepo;
+        
         private readonly IMapper _mapper;
 
         public BookingService(
             IGenaricRepo<Booking> bookingRepo,
             IUniteOfWork unitOfWork,
             IGenaricRepo<DoctorAvailability> availabilityRepo,
+           
             IMapper mapper)
         {
             _bookingRepo = bookingRepo;
             _unitOfWork = unitOfWork;
             this.availabilityRepo = availabilityRepo;
+           
             _mapper = mapper;
         }
 
@@ -112,6 +115,12 @@ namespace Hosptial.BLL.Services.Classes
 
             _bookingRepo.Add(booking);
             var saved = _unitOfWork.SaveChanges() > 0;
+            //if (saved)
+            //{
+            //    var spec = new PatientSpecification(model.PatientId);
+            //    var patient=await _unitOfWork.GetGenaricRepo<Patient>().Get(spec);
+            //    await notificationService.SendToDoctor(availability.DoctorId, $"New appointment booked by a patient {patient.User.UserName} ");
+            //}
 
             return saved ? booking.Id : 0;  // ✅ return the new booking id
         }

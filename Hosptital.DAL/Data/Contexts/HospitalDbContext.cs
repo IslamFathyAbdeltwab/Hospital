@@ -18,6 +18,7 @@ namespace Hosptital.DAL.Data.Contexts
         {
 
         }
+        
         public DbSet<Attachment> Attachments { get; set; }
         public DbSet<Admin> Admins { get; set; }
         public DbSet<Conversation> Conversations { get; set; }

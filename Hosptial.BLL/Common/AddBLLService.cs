@@ -18,14 +18,14 @@ namespace Hosptial.BLL.Common
             services.AddScoped<IDoctorService, DoctorService>();
             services.AddScoped<IPatientService, PatientService>();
             services.AddScoped<IBookingService, BookingService>();
-            services.AddScoped<IDoctorService, DoctorService>();
+          
             services.AddScoped<IDoctorAvailabilityService, DoctorAvailabilityService>();
             services.AddScoped<IPrescriptionService, PreScriptionService>();
             services.AddScoped<IAttachmentService, AttachmentService>();
             services.AddScoped<IPaymentService, PaymentService>();
             services.AddScoped<IAdminService, AdminService>();
-           services.AddScoped<IChatService, ChatService>();
-
+            services.AddScoped<IChatService, ChatService>();
+            services.AddHttpClient<IAIService, AIService>();
 
 
 

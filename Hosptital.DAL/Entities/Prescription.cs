@@ -15,6 +15,7 @@ namespace Hosptital.DAL.Entities
         public int PatientId { get; set; }
         public Patient Patient { get; set; }
         public string Diagnosis { get; set; }
+        public string AiExplanation { get; set; } = "NO Available Explanation limit exceeded";
 
         public ICollection<Treatment> Treatments { get; set; } = new List<Treatment>();
 

@@ -120,6 +120,7 @@ namespace Hospital
 
             // After app.Build()
             app.MapHub<ChatHub>("/hubs/chat");
+            app.MapHub<NotificationHub>("/notificationHub");
 
             //app.UseHttpsRedirection();
 
