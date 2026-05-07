@@ -27,6 +27,7 @@ namespace Hosptial.BLL.Common
             services.AddScoped<IChatService, ChatService>();
             services.AddHttpClient<IAIService, AIService>();
             services.AddHttpClient< IAISymptomCheckerService, AISymptomCheckerService>();
+            services.AddHttpClient< IAIPatientSummaryService, AIPatientSummaryService>();
 
 
 
