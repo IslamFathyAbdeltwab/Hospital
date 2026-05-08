@@ -5,10 +5,13 @@ using Hosptial.BLL.ViewModels.BookingViewModels;
 using Hosptial.BLL.ViewModels.Common;
 using Hosptial.BLL.ViewModels.DoctorViewModels;
 using Hosptial.BLL.ViewModels.PatientViewModels;
+using Hosptital.DAL.Data.Contexts;
 using Hosptital.DAL.Entities;
 using Hosptital.DAL.Entities.Base;
 using Hosptital.DAL.Repositroyes.Interfaces;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -28,6 +31,7 @@ namespace Hosptial.BLL.Services.Classes
         private readonly RoleManager<IdentityRole<int>> _roleManager;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IBookingService _bookingService;
+        private readonly HospitalDbContext context;
         private readonly IMapper _mapper;
 
         public DoctorService(
@@ -37,6 +41,8 @@ namespace Hosptial.BLL.Services.Classes
             RoleManager<IdentityRole<int>> roleManager,
             UserManager<ApplicationUser> userManager,
             IBookingService bookingService,
+            HospitalDbContext _context,
+           
             IMapper mapper)
         {
             _configuration = configuration;
@@ -45,6 +51,7 @@ namespace Hosptial.BLL.Services.Classes
             _roleManager = roleManager;
             _userManager = userManager;
             _bookingService = bookingService;
+            context = _context;
             _mapper = mapper;
         }
 
@@ -213,6 +220,47 @@ namespace Hosptial.BLL.Services.Classes
             if (avlId <= 0) return null;
             return await _bookingService.GetBookedPatients(avlId);
         }
-        
+        public async Task<DoctorDashboardDto> GetDoctorDashboardAsync(int doctorId)
+        {
+            var sql = @"
+SELECT
+    COUNT(DISTINCT b.PatientId) AS TotalPatients,
+
+    (SELECT COUNT(*) 
+     FROM Prescriptions p 
+     WHERE p.DoctorId = @DoctorId) AS TotalPrescriptions,
+
+    COUNT(b.Id) AS TotalBookings,
+
+    SUM(CASE WHEN b.Status = 1 THEN 1 ELSE 0 END) AS ConfirmedBookings,
+    SUM(CASE WHEN b.Status = 0 THEN 1 ELSE 0 END) AS PendingBookings,
+    SUM(CASE WHEN b.Status = 3 THEN 1 ELSE 0 END) AS CancelledBookings,
+
+    SUM(da.Price) AS TotalRevenue,
+
+    SUM(CASE WHEN b.Status = 0 THEN da.Price ELSE 0 END) AS PendingRevenue,
+
+    SUM(CASE 
+            WHEN MONTH(b.ConsultionTime) = MONTH(GETDATE())
+             AND YEAR(b.ConsultionTime) = YEAR(GETDATE())
+            THEN da.Price ELSE 0 
+        END) AS ThisMonthRevenue,
+
+    AVG(da.Price) AS AvgBookingPrice
+
+FROM Bookings b
+INNER JOIN DoctorAvailabilities da 
+    ON b.DoctorAvailabilityId = da.Id
+WHERE da.DoctorId = @DoctorId
+";
+
+            var result = await context.Set<DoctorDashboardDto>()
+                .FromSqlRaw(sql, new SqlParameter("@DoctorId", doctorId))
+                .AsNoTracking()
+                .FirstOrDefaultAsync();
+
+            return result ?? new DoctorDashboardDto();
+        }
+
     }
 }

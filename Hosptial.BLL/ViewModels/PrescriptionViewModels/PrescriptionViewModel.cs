@@ -16,5 +16,6 @@ namespace Hosptial.BLL.ViewModels.PrescriptionViewModels
         public int PatientId { get; set; }
         public string Diagnosis { get; set; }
         public int Id { get; set; }
+        public string aiExplanation { get; set; }
     }
 }

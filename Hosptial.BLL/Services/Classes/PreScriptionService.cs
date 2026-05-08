@@ -3,6 +3,7 @@ using Hosptial.BLL.Services.Interfaces;
 using Hosptial.BLL.Specification;
 using Hosptial.BLL.ViewModels.PrescriptionViewModels;
 using Hosptital.DAL.Entities;
+using Hosptital.DAL.Migrations;
 using Hosptital.DAL.Repositroyes.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -16,24 +17,29 @@ namespace Hosptial.BLL.Services.Classes
     {
         private readonly IUniteOfWork uniteOfWork;
         private readonly IMapper mapper;
+        private readonly IAIService aiService;
 
-        public PreScriptionService(IUniteOfWork uniteOfWork,IMapper mapper )
+        public PreScriptionService(IUniteOfWork uniteOfWork,IMapper mapper, IAIService aiService)
         {
             this.uniteOfWork = uniteOfWork;
             this.mapper = mapper;
+            this.aiService = aiService;
         }
         public async Task<bool> Add(AddPrescriptionViewModel prescription)
         {
             if (prescription is null) return false;
-            uniteOfWork.GetGenaricRepo<Prescription>().Add(new Prescription
+            var pre = new Prescription
             {
                 DoctorId = prescription.DoctorId,
                 PatientId = prescription.PatientId,
                 Treatments = prescription.Treatments,
-                Diagnosis = prescription.Diagnosis
+                Diagnosis = prescription.Diagnosis,
+            };
+            pre.AiExplanation = await aiService.ExplainPrescription(prescription);
 
 
-            });
+            uniteOfWork.GetGenaricRepo<Prescription>().Add(pre);
+           
             return await uniteOfWork.SaveChangesAsync() > 0;
         }
 
@@ -51,6 +57,9 @@ namespace Hosptial.BLL.Services.Classes
 
             var prescriptions=await uniteOfWork.GetGenaricRepo<Prescription>().GetAll(spec);
 
+
+             
+           
             return mapper.Map<List<PrescriptionViewModel>>(prescriptions);
 
         }
