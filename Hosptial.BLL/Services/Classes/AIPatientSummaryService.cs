@@ -4,6 +4,7 @@ using Hosptial.BLL.ViewModels.PrescriptionViewModels;
 using Hosptital.DAL.Entities;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using System.Net.Http.Headers;
 using System.Text;
 
 public class AIPatientSummaryService
@@ -23,7 +24,7 @@ public class AIPatientSummaryService
     public async Task<string> GenerateSummary(
         List<PrescriptionViewModel> prescriptions)
     {
-        var apiKey = _configuration["Gemini:ApiKey"];
+        var apiKey = _configuration["OpenRouter:ApiKey"];
 
         var allData = new StringBuilder();
 
@@ -59,22 +60,18 @@ Rules:
 - Mention important patterns
 - No markdown
 ";
-
         var body = new
         {
-            contents = new[]
+            model = "openai/gpt-3.5-turbo",
+
+            messages = new[]
             {
-                new
-                {
-                    parts = new[]
-                    {
-                        new
-                        {
-                            text = prompt
-                        }
-                    }
-                }
-            }
+        new
+        {
+            role = "user",
+            content = prompt
+        }
+    }
         };
 
         var json = JsonConvert.SerializeObject(body);
@@ -85,11 +82,23 @@ Rules:
             "application/json"
         );
 
-        var url =
-            $"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={apiKey}";
+     
+        _httpClient.DefaultRequestHeaders.Authorization =
+    new AuthenticationHeaderValue("Bearer", apiKey);
+        _httpClient.DefaultRequestHeaders.Add(
+    "HTTP-Referer",
+    "http://localhost:4200");
 
-        var response =
-            await _httpClient.PostAsync(url, content);
+        _httpClient.DefaultRequestHeaders.Add(
+            "X-Title",
+            "Hospital System");
+        var response = await _httpClient.PostAsync(
+     "https://openrouter.ai/api/v1/chat/completions",
+     content
+ );
+        var responseString = await response.Content.ReadAsStringAsync();
+
+      
 
         // LIMIT HANDLING
         if (!response.IsSuccessStatusCode)
@@ -97,13 +106,11 @@ Rules:
             return "AI summary unavailable now. please Doctor Try again in another time";
         }
 
-        var responseString =
-            await response.Content.ReadAsStringAsync();
+        
 
         dynamic result =
             JsonConvert.DeserializeObject(responseString);
 
-        return result.candidates[0]
-            .content.parts[0].text.ToString();
+        return result.choices[0].message.content;
     }
 }
