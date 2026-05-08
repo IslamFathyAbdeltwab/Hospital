@@ -2,9 +2,11 @@
 using Hosptial.BLL.ViewModels;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using System.Net.Http.Headers;
 using System.Text;
 
-public class AISymptomCheckerService : IAISymptomCheckerService
+public class AISymptomCheckerService
+    : IAISymptomCheckerService
 {
     private readonly HttpClient _httpClient;
     private readonly IConfiguration _configuration;
@@ -17,9 +19,11 @@ public class AISymptomCheckerService : IAISymptomCheckerService
         _configuration = configuration;
     }
 
-    public async Task<SymptomResponseDto> CheckSymptoms(string symptoms)
+    public async Task<SymptomResponseDto>
+        CheckSymptoms(string symptoms)
     {
-        var apiKey = _configuration["Gemini:ApiKey"];
+        var apiKey =
+            _configuration["OpenRouter:ApiKey"];
 
         var prompt = $@"
 Patient symptoms:
@@ -42,22 +46,20 @@ Rules:
 
         var body = new
         {
-            contents = new[]
+            model = "openai/gpt-3.5-turbo",
+
+            messages = new[]
             {
                 new
                 {
-                    parts = new[]
-                    {
-                        new
-                        {
-                            text = prompt
-                        }
-                    }
+                    role = "user",
+                    content = prompt
                 }
             }
         };
 
-        var json = JsonConvert.SerializeObject(body);
+        var json =
+            JsonConvert.SerializeObject(body);
 
         var content = new StringContent(
             json,
@@ -65,35 +67,52 @@ Rules:
             "application/json"
         );
 
-        var url =
-    "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key="
-    + apiKey;
+        _httpClient.DefaultRequestHeaders.Authorization =
+            new AuthenticationHeaderValue(
+                "Bearer",
+                apiKey);
 
-        var response = await _httpClient.PostAsync(url, content);
+        _httpClient.DefaultRequestHeaders.Add(
+            "HTTP-Referer",
+            "http://localhost:4200");
 
-        // HANDLE LIMIT ERROR
+        _httpClient.DefaultRequestHeaders.Add(
+            "X-Title",
+            "Hospital System");
+
+        var response = await _httpClient.PostAsync(
+            "https://openrouter.ai/api/v1/chat/completions",
+            content
+        );
+
         if (!response.IsSuccessStatusCode)
         {
             return new SymptomResponseDto
             {
                 Speciality = "Unavailable",
-                PossibleDiseases = new List<string>(),
-                Advice = "AI service busy now. Please try again later"
+
+                PossibleDiseases =
+                    new List<string>(),
+
+                Advice =
+                    "AI service unavailable now."
             };
         }
 
-        var responseString = await response.Content.ReadAsStringAsync();
+        var responseString =
+            await response.Content.ReadAsStringAsync();
 
-        dynamic result = JsonConvert.DeserializeObject(responseString);
+        dynamic result =
+            JsonConvert.DeserializeObject(responseString);
 
         string text =
-            result.candidates[0].content.parts[0].text.ToString();
+            result.choices[0].message.content.ToString();
 
-        // REMOVE ```json
         text = text.Replace("```json", "")
                    .Replace("```", "")
                    .Trim();
 
-        return JsonConvert.DeserializeObject<SymptomResponseDto>(text);
+        return JsonConvert
+            .DeserializeObject<SymptomResponseDto>(text);
     }
 }

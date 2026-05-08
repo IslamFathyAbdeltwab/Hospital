@@ -4,7 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Text;
-
+//for help the patient to understand his prescription by using AI to explain it in simple language
 public class AIService : IAIService
 {
     private readonly HttpClient _httpClient;

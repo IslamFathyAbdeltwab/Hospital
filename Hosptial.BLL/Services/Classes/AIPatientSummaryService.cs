@@ -6,7 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Text;
-
+//for doctor to get a summary about the patient's history by using AI to analyze his prescriptions and give a summary about his history in short format
 public class AIPatientSummaryService
     : IAIPatientSummaryService
 {
