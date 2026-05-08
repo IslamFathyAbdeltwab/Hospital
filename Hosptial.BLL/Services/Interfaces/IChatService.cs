@@ -12,6 +12,7 @@ namespace Hosptial.BLL.Services.Interfaces
     {
         Task<ConversationDto> CreateConversation(CreateConversationDto dto);
         Task<List<ConversationDto>> GetPatientConversations(int patientId);
+        Task<List<ConversationDto>> GetDoctorConversations(int doctorId);
         Task<List<MessageDto>> GetMessages(int conversationId);
         Task<MessageDto> SaveMessage(SendMessageDto dto);
         Task MarkAsRead(int conversationId, int userId);

@@ -17,6 +17,8 @@ namespace Hosptital.DAL.Entities
         public string Diagnosis { get; set; }
         public string AiExplanation { get; set; } = "NO Available Explanation limit exceeded";
 
+        public int BookingId { get; set; } 
+
         public ICollection<Treatment> Treatments { get; set; } = new List<Treatment>();
 
     }

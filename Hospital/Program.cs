@@ -30,21 +30,37 @@ namespace Hospital
             builder.Services.AddOpenApi();
 
             //stripe 
-            Stripe.StripeConfiguration.ApiKey =    builder.Configuration["Stripe:SecretKey"];
+            Stripe.StripeConfiguration.ApiKey = builder.Configuration["Stripe:SecretKey"];
             // =========================
             // CORS CONFIGURATION (FIX)
             // =========================
+            //builder.Services.AddCors(options =>
+            //{
+            //    options.AddPolicy("AllowAngularDev", policy =>
+            //    {
+            //        policy
+            //            .WithOrigins("http://localhost:4200")
+            //.AllowAnyHeader()
+            //.AllowAnyMethod()
+            //.AllowCredentials();
+            //    });
+            //});
+
+            // ? Replace your current CORS config with this
             builder.Services.AddCors(options =>
             {
-                options.AddPolicy("AllowAngularDev", policy =>
+                options.AddPolicy("AllowFrontend", policy =>
                 {
                     policy
-                        .WithOrigins("http://localhost:4200")
+                        .WithOrigins("http://localhost:4200")  // exact origin — no trailing slash
                         .AllowAnyHeader()
-                        .AllowAnyMethod();
+                        .AllowAnyMethod()
+                        .AllowCredentials();                   // ? required for SignalR
                 });
             });
-            
+
+
+
 
             // =========================
             // JWT AUTHENTICATION
@@ -67,6 +83,22 @@ namespace Hospital
                     IssuerSigningKey = new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(
                         System.Text.Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!)),
                     ClockSkew = TimeSpan.Zero
+                };
+                opt.Events = new JwtBearerEvents
+                {
+                    OnMessageReceived = context =>
+                    {
+                        var accessToken = context.Request.Query["access_token"];
+                        var path = context.HttpContext.Request.Path;
+
+                        if (!string.IsNullOrEmpty(accessToken) &&
+                            path.StartsWithSegments("/hubs/chat"))
+                        {
+                            context.Token = accessToken;
+                        }
+
+                        return Task.CompletedTask;
+                    }
                 };
             });
 
@@ -99,6 +131,13 @@ namespace Hospital
 
             var app = builder.Build();
 
+            app.UseWebSockets();
+
+            // Make sure this comes BEFORE app.MapHub and app.MapControllers
+            app.UseCors("AllowFrontend");
+
+            // ? Hub mapping — must come AFTER UseCors
+
             // =========================
             // DB INITIALIZER
             // =========================
@@ -116,21 +155,22 @@ namespace Hospital
                 app.MapOpenApi();
             }
             // Services
-            
+
 
             // After app.Build()
-            app.MapHub<ChatHub>("/hubs/chat");
-            app.MapHub<NotificationHub>("/notificationHub");
+
 
             //app.UseHttpsRedirection();
 
             // ? IMPORTANT: CORS must be here
-            app.UseCors("AllowAngularDev");
+            //app.UseCors("AllowAngularDev");
 
             app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllers();
+            app.MapHub<ChatHub>("/hubs/chat");
+
 
             app.Run();
         }

@@ -4,6 +4,7 @@ using Hosptital.DAL.Data.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Hosptital.DAL.Migrations
 {
     [DbContext(typeof(HospitalDbContext))]
-    partial class HospitalDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260506131439_link prscription by booking")]
+    partial class linkprscriptionbybooking
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,41 +24,6 @@ namespace Hosptital.DAL.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("DoctorDashboardDto", b =>
-                {
-                    b.Property<decimal>("AvgBookingPrice")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("CancelledBookings")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ConfirmedBookings")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PendingBookings")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("PendingRevenue")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("ThisMonthRevenue")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("TotalBookings")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TotalPatients")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TotalPrescriptions")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("TotalRevenue")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.ToTable("DoctorDashboard");
-                });
 
             modelBuilder.Entity("Hosptital.DAL.Entities.Admin", b =>
                 {
@@ -444,10 +412,6 @@ namespace Hosptital.DAL.Migrations
 
                     b.Property<int>("BookingId")
                         .HasColumnType("int");
-
-                    b.Property<string>("AiExplanation")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
