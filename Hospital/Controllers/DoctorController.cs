@@ -135,6 +135,14 @@ namespace Hospital.Controllers
             return Ok(prescription);
         }
 
+        // get specific prescription by booking id
+        [HttpGet("Prescription/Booking/{bookingId}")]
+        public async Task<ActionResult> GetPrescriptionByBookingId(int bookingId)
+        {
+            var prescription = await prescriptionService.GetByBookingId(bookingId);
+            return Ok(prescription);
+        }
+
         // get all prescriptions
         [HttpGet("Prescriptions/{patientId}")]
         public async Task<ActionResult> GetAllPrescriptions(int patientId)

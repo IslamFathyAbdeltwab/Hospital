@@ -16,6 +16,8 @@ namespace Hosptital.DAL.Entities
         public Patient Patient { get; set; }
         public string Diagnosis { get; set; }
 
+        public int BookingId { get; set; } 
+
         public ICollection<Treatment> Treatments { get; set; } = new List<Treatment>();
 
     }

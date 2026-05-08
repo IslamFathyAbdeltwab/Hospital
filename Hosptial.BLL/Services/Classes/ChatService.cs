@@ -143,5 +143,20 @@ namespace Hosptial.BLL.Services.Classes
             IsRead = m.IsRead,
             SentAt = m.SentAt,
         };
+
+        public async Task<List<ConversationDto>> GetDoctorConversations(int doctorId)
+        {
+            var spec = new DoctorConversationSpec(doctorId);
+            var conversations = await _uniteOfWork
+                .GetGenaricRepo<Conversation>()
+                .GetAll(spec);
+
+            return  conversations.Select(c =>
+            {
+                var last = c.Messages.OrderByDescending(m => m.SentAt).FirstOrDefault();
+                var unread = c.Messages.Count(m => !m.IsRead && m.SenderRole == "Patient");
+                return MapConversation(c, last, unread);
+            }).ToList();
+        }
     }
 }

@@ -14,6 +14,13 @@ namespace Hospital.Controllers
         {
             _chatService = chatService;
         }
+        // Get all conversations for a doctor
+        [HttpGet("conversations/doctor/{doctorId}")]
+        public async Task<IActionResult> GetDoctorConversations(int doctorId)
+        {
+            var convs = await _chatService.GetDoctorConversations(doctorId);
+            return Ok(convs);
+        }
 
         // Create a new conversation for an appointment
         [HttpPost("conversations")]

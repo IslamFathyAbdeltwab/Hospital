@@ -15,6 +15,8 @@ namespace Hosptial.BLL.Services.Interfaces
         public Task<bool> Add(AddPrescriptionViewModel prescription);
 
         public Task<PrescriptionViewModel> Get(int id);
+        public Task<PrescriptionViewModel> GetByBookingId(int bookingId);
+
 
         public Task<List<PrescriptionViewModel>> GetAll(int patientId);
         public Task<List<Prescription>> GetDoctorPationtsWithPrescriptions(int doctorId);
