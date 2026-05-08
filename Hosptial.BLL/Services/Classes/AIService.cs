@@ -2,6 +2,7 @@
 using Hosptial.BLL.ViewModels.PrescriptionViewModels;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using System.Net.Http.Headers;
 using System.Text;
 
 public class AIService : IAIService
@@ -9,17 +10,22 @@ public class AIService : IAIService
     private readonly HttpClient _httpClient;
     private readonly IConfiguration _configuration;
 
-    public AIService(HttpClient httpClient, IConfiguration configuration)
+    public AIService(
+        HttpClient httpClient,
+        IConfiguration configuration)
     {
         _httpClient = httpClient;
         _configuration = configuration;
     }
 
-    public async Task<string> ExplainPrescription(AddPrescriptionViewModel prescription)
+    public async Task<string> ExplainPrescription(
+        AddPrescriptionViewModel prescription)
     {
-        var apiKey = _configuration["Gemini:ApiKey"];
+        var apiKey =
+            _configuration["OpenRouter:ApiKey"];
 
-        var treatmentsText = string.Join("\n",
+        var treatmentsText = string.Join(
+            "\n",
             prescription.Treatments.Select(t =>
                 $"Medicine: {t.MedicationName}, Notes: {t.Notes}")
         );
@@ -37,29 +43,28 @@ Treatments:
 
 Rules:
 - Use simple English
-- Short explanation
-- Explain how to take medicines
-- Add healthy advice if needed
+- Keep explanation short
+- Explain medicine usage clearly
+- Add simple healthy advice
+- No markdown
 ";
 
         var body = new
         {
-            contents = new[]
+            model = "openai/gpt-3.5-turbo",
+
+            messages = new[]
             {
                 new
                 {
-                    parts = new[]
-                    {
-                        new
-                        {
-                            text = prompt
-                        }
-                    }
+                    role = "user",
+                    content = prompt
                 }
             }
         };
 
-        var json = JsonConvert.SerializeObject(body);
+        var json =
+            JsonConvert.SerializeObject(body);
 
         var content = new StringContent(
             json,
@@ -67,18 +72,35 @@ Rules:
             "application/json"
         );
 
+        _httpClient.DefaultRequestHeaders.Authorization =
+            new AuthenticationHeaderValue(
+                "Bearer",
+                apiKey);
+
+        _httpClient.DefaultRequestHeaders.Add(
+            "HTTP-Referer",
+            "http://localhost:4200");
+
+        _httpClient.DefaultRequestHeaders.Add(
+            "X-Title",
+            "Hospital System");
+
         var response = await _httpClient.PostAsync(
-            $"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={apiKey}",
+            "https://openrouter.ai/api/v1/chat/completions",
             content
         );
 
+        var responseString =
+            await response.Content.ReadAsStringAsync();
+
         if (!response.IsSuccessStatusCode)
-            return "AI explanation unavailable";
+        {
+            return "AI explanation unavailable now.";
+        }
 
-        var responseString = await response.Content.ReadAsStringAsync();
+        dynamic result =
+            JsonConvert.DeserializeObject(responseString);
 
-        dynamic result = JsonConvert.DeserializeObject(responseString);
-
-        return result.candidates[0].content.parts[0].text.ToString();
+        return result.choices[0].message.content;
     }
 }
