@@ -30,19 +30,22 @@ namespace Hospital.Controllers
         // add new admin
         [HttpPost]
         [Route("addAdmin")]
-        public async Task<IActionResult> AddAdmin( AddAdminViewModel admin)
+        public async Task<IActionResult> AddAdmin(AddAdminViewModel admin)
         {
             var isAdded = await adminService.AddAdminAsync(admin);
-            return isAdded ? Ok("Admin added successfully") : BadRequest("Failed to add admin");
+            return isAdded
+    ? Ok(new { message = "Admin added successfully" })
+    : BadRequest(new { message = "Failed to add admin" });
         }
 
         // update admin
         [HttpPut]
         [Route("updateAdmin/{id}")]
-        public async Task<IActionResult> UpdateAdmin(int id,  AddAdminViewModel admin)
+        public async Task<IActionResult> UpdateAdmin(int id, AddAdminViewModel admin)
         {
             var isUpdated = await adminService.UpdateAdminAsync(id, admin);
-            return isUpdated ? Ok("Admin updated successfully") : BadRequest("Failed to update admin");
+         return isUpdated   ? Ok(new { message = "Admin updated successfully" })
+    : BadRequest(new { message = "Failed to update admin" });
         }
 
         // delete admin
@@ -51,7 +54,9 @@ namespace Hospital.Controllers
         public async Task<IActionResult> DeleteAdmin(int id)
         {
             var isDeleted = await adminService.DeleteAdminAsync(id);
-            return isDeleted ? Ok("Admin deleted successfully") : BadRequest("Failed to delete admin");
+            return isDeleted
+    ? Ok(new { message = "Admin deleted successfully" })
+    : BadRequest(new { message = "Failed to delete admin" });
         }
 
         // get peending doctors 
@@ -69,7 +74,9 @@ namespace Hospital.Controllers
         public async Task<IActionResult> ApproveDoctor(int doctorId)
         {
             var isApproved = await adminService.ApproveDoctorAsync(doctorId);
-            return isApproved ? Ok("Doctor approved successfully") : BadRequest("Failed to approve doctor");
+            return isApproved
+     ? Ok(new { message = "Doctor approved successfully" })
+     : BadRequest(new { message = "Failed to approve doctor" });
         }
 
         // get doctor
@@ -81,8 +88,8 @@ namespace Hospital.Controllers
             if (doct is null)
                 return NotFound();
             else return Ok(doct);
-            
-            
+
+
         }
 
 
@@ -96,7 +103,7 @@ namespace Hospital.Controllers
             if (logined is null)
             {
                 return Unauthorized("Invalid Email or PassWork");
-                
+
             }
             return Ok(logined);
         }
