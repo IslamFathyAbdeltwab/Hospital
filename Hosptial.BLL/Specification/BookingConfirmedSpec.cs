@@ -8,8 +8,7 @@ public class BookingConfirmedSpec : BaseSpecification<Booking>
         : base(a =>
             a.Id == appointmentId &&
             a.PatientId == patientId &&
-            a.DoctorAvailability.DoctorId == doctorId &&
-            a.Status == AppointmentStatus.Confirmed)
+            a.DoctorAvailability.DoctorId == doctorId )
     {
         AddInclude(a => a.DoctorAvailability);
     }
